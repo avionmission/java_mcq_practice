@@ -1,20 +1,16 @@
 import json
 
-with open('questions.json') as f:
-    questions1 = json.load(f)
-
 with open('quiz2-questions.json') as f:
-    questions2 = json.load(f)
+    questions = json.load(f)
 
-Q1 = len(questions1)
-Q2 = len(questions2)
+NUM_Q = len(questions)
 
 html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Java MCQ Quiz</title>
+<title>Java FSE Main Test Quiz</title>
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{
@@ -23,24 +19,12 @@ html = f'''<!DOCTYPE html>
     padding: 20px; color: #1a1a2e;
   }}
   .container {{ width: 100%; max-width: 720px; }}
-  .tabs {{
-    display: flex; gap: 0; background: #16213e; border-radius: 12px 12px 0 0;
-    overflow: hidden;
-  }}
-  .tab {{
-    flex: 1; padding: 14px 20px; border: none; background: transparent;
-    color: rgba(255,255,255,0.5); font-size: 15px; font-weight: 500;
-    cursor: pointer; transition: all 0.15s ease; border-bottom: 3px solid transparent;
-  }}
-  .tab:hover {{ color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.05); }}
-  .tab.active {{ color: white; border-bottom-color: #0f3460; background: #1a1a2e; }}
   .header {{
-    background: #1a1a2e; color: white; padding: 16px 24px;
+    background: #1a1a2e; color: white; padding: 20px 24px; border-radius: 12px 12px 0 0;
     display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
   }}
-  .header h1 {{ font-size: 18px; font-weight: 600; }}
-  .header .subtitle {{ font-size: 13px; color: rgba(255,255,255,0.6); }}
-  .score {{ font-size: 15px; background: #16213e; padding: 5px 12px; border-radius: 20px; }}
+  .header h1 {{ font-size: 20px; font-weight: 600; }}
+  .score {{ font-size: 16px; background: #16213e; padding: 6px 14px; border-radius: 20px; }}
   .progress-wrap {{ background: #e9ecef; height: 6px; }}
   .progress-bar {{ height: 100%; background: #0f3460; transition: width 0.3s ease; width: 0%; }}
   .card {{
@@ -52,7 +36,6 @@ html = f'''<!DOCTYPE html>
     font-size: 17px; line-height: 1.6; margin-bottom: 24px; font-weight: 500;
   }}
   .q-text code, .answer-text code {{ background: #eef1ff; padding: 1px 5px; border-radius: 4px; font-size: 0.9em; font-family: 'Courier New', monospace; }}
-  .q-text pre {{ background: #f8f9fa; padding: 12px; border-radius: 8px; font-size: 14px; overflow-x: auto; margin: 8px 0; line-height: 1.5; border: 1px solid #eee; }}
   .options {{ display: flex; flex-direction: column; gap: 10px; }}
   .option-btn {{
     display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
@@ -114,8 +97,7 @@ html = f'''<!DOCTYPE html>
   @media (max-width: 500px) {{
     body {{ padding: 10px; }}
     .header {{ padding: 14px 16px; }}
-    .header h1 {{ font-size: 16px; }}
-    .tab {{ font-size: 13px; padding: 12px 10px; }}
+    .header h1 {{ font-size: 17px; }}
     .card {{ padding: 20px 16px; }}
     .q-text {{ font-size: 15px; }}
     .option-btn {{ padding: 12px 14px; font-size: 14px; }}
@@ -124,21 +106,14 @@ html = f'''<!DOCTYPE html>
 </head>
 <body>
 <div class="container">
-  <div class="tabs">
-    <button class="tab active" data-tab="1">Quiz 1: Java MCQs</button>
-    <button class="tab" data-tab="2">Quiz 2: FSE Main Test</button>
-  </div>
   <div class="header">
-    <div>
-      <h1 id="quizTitle">Java MCQ Quiz</h1>
-      <div class="subtitle" id="quizSubtitle">71 questions - Java/JPA/JDBC/Spring</div>
-    </div>
-    <div class="score">Score: <span id="score">0</span> / <span id="total">{Q1}</span></div>
+    <h1>Java FSE Main Test</h1>
+    <div class="score">Score: <span id="score">0</span> / <span id="total">{NUM_Q}</span></div>
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
   <div class="card">
     <div id="quizContent" class="quiz-content">
-      <div class="q-num" id="qNum">Question 1 of {Q1}</div>
+      <div class="q-num" id="qNum">Question 1 of {NUM_Q}</div>
       <div class="q-text" id="qText"></div>
       <div class="options" id="options"></div>
       <div class="feedback" id="feedback">
@@ -152,7 +127,7 @@ html = f'''<!DOCTYPE html>
     </div>
     <div class="results" id="results">
       <h2>Quiz Complete!</h2>
-      <div class="score-big"><span id="finalScore">0</span><span class="total"> / {Q1}</span></div>
+      <div class="score-big"><span id="finalScore">0</span><span class="total"> / {NUM_Q}</span></div>
       <div class="pct" id="finalPct">0%</div>
       <div class="summary" id="summary"></div>
       <button class="restart-btn" id="restartBtn">Restart Quiz</button>
@@ -160,79 +135,31 @@ html = f'''<!DOCTYPE html>
   </div>
 </div>
 <script>
-var QUIZZES = {{
-  1: {json.dumps(questions1, ensure_ascii=False)},
-  2: {json.dumps(questions2, ensure_ascii=False)}
-}};
+const QUESTIONS = {json.dumps(questions, ensure_ascii=False)};
 
-var TOTALS = {{ 1: {Q1}, 2: {Q2} }};
-var TITLES = {{ 1: 'Quiz 1: Java MCQ', 2: 'Quiz 2: FSE Main Test' }};
-var SUBTITLES = {{ 1: '{Q1} questions - Java/JPA/JDBC/Spring', 2: '{Q2} questions - JSP/Scrum/Spring/Eureka' }};
+let currentIdx = 0;
+let answered = [];
+let quizDone = false;
 
-var activeTab = 1;
-var state = {{
-  1: {{ currentIdx: 0, answered: [], quizDone: false }},
-  2: {{ currentIdx: 0, answered: [], quizDone: false }}
-}};
-
-var QUESTIONS = QUIZZES[1];
-var currentIdx = 0;
-var answered = [];
-var quizDone = false;
-
-var qNum = document.getElementById('qNum');
-var qText = document.getElementById('qText');
-var options = document.getElementById('options');
-var feedback = document.getElementById('feedback');
-var feedbackMsg = document.getElementById('feedbackMsg');
-var feedbackAnswer = document.getElementById('feedbackAnswer');
-var prevBtn = document.getElementById('prevBtn');
-var nextBtn = document.getElementById('nextBtn');
-var progressBar = document.getElementById('progressBar');
-var scoreEl = document.getElementById('score');
-var totalEl = document.getElementById('total');
-var quizTitle = document.getElementById('quizTitle');
-var quizSubtitle = document.getElementById('quizSubtitle');
-var quizContent = document.getElementById('quizContent');
-var results = document.getElementById('results');
-var finalScore = document.getElementById('finalScore');
-var finalPct = document.getElementById('finalPct');
-var summary = document.getElementById('summary');
-var restartBtn = document.getElementById('restartBtn');
-var tabs = document.querySelectorAll('.tab');
-
-function switchTab(tab) {{
-  if (tab === activeTab) return;
-  // Save current state
-  state[activeTab] = {{ currentIdx: currentIdx, answered: answered, quizDone: quizDone }};
-  // Load new state
-  activeTab = tab;
-  var s = state[tab];
-  QUESTIONS = QUIZZES[tab];
-  currentIdx = s.currentIdx;
-  answered = s.answered;
-  quizDone = s.quizDone;
-
-  tabs.forEach(function(t) {{ t.classList.toggle('active', t.dataset.tab == tab); }});
-  quizTitle.textContent = TITLES[tab];
-  quizSubtitle.textContent = SUBTITLES[tab];
-  totalEl.textContent = TOTALS[tab];
-  results.classList.remove('show');
-  quizContent.classList.remove('hidden');
-  updateScore();
-  if (quizDone) {{
-    showResults();
-  }} else {{
-    renderQuestion();
-  }}
-}}
-
-tabs.forEach(function(t) {{
-  t.addEventListener('click', function() {{ switchTab(parseInt(t.dataset.tab)); }});
-}});
+const qNum = document.getElementById('qNum');
+const qText = document.getElementById('qText');
+const options = document.getElementById('options');
+const feedback = document.getElementById('feedback');
+const feedbackMsg = document.getElementById('feedbackMsg');
+const feedbackAnswer = document.getElementById('feedbackAnswer');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const progressBar = document.getElementById('progressBar');
+const scoreEl = document.getElementById('score');
+const quizContent = document.getElementById('quizContent');
+const results = document.getElementById('results');
+const finalScore = document.getElementById('finalScore');
+const finalPct = document.getElementById('finalPct');
+const summary = document.getElementById('summary');
+const restartBtn = document.getElementById('restartBtn');
 
 function escapeHtml(s) {{
-  var d = document.createElement('div');
+  const d = document.createElement('div');
   d.textContent = s;
   return d.innerHTML;
 }}
@@ -254,8 +181,7 @@ function updateScore() {{
 function renderQuestion() {{
   if (quizDone) return;
   var q = QUESTIONS[currentIdx];
-  var total = TOTALS[activeTab];
-  qNum.textContent = 'Question ' + (currentIdx + 1) + ' of ' + total;
+  qNum.textContent = 'Question ' + (currentIdx + 1) + ' of {NUM_Q}';
   qText.innerHTML = formatText(q.question);
 
   options.innerHTML = '';
@@ -271,7 +197,7 @@ function renderQuestion() {{
   feedback.classList.remove('show', 'correct', 'wrong');
   prevBtn.classList.remove('show');
   nextBtn.classList.remove('show');
-  progressBar.style.width = ((currentIdx + 1) / total * 100) + '%';
+  progressBar.style.width = ((currentIdx + 1) / {NUM_Q} * 100) + '%';
 
   if (answered[currentIdx] !== undefined) {{
     applyAnswerState();
@@ -280,20 +206,19 @@ function renderQuestion() {{
 }}
 
 function applyAnswerState() {{
-  var s = answered[currentIdx];
-  if (!s) return;
+  var state = answered[currentIdx];
+  if (!state) return;
   var q = QUESTIONS[currentIdx];
   var btns = options.querySelectorAll('.option-btn');
   btns.forEach(function(btn, i) {{
     btn.classList.remove('correct', 'wrong');
     if (q.options[i].label === q.answer_label) btn.classList.add('correct');
   }});
-  if (s.selectedLabel !== q.answer_label) {{
-    btns[s.selectedIdx].classList.add('wrong');
+  if (state.selectedLabel !== q.answer_label) {{
+    btns[state.selectedIdx].classList.add('wrong');
   }}
-  showFeedback(s.correct);
-  var total = TOTALS[activeTab];
-  nextBtn.textContent = (currentIdx === total - 1) ? 'Finish' : 'Next';
+  showFeedback(state.correct);
+  nextBtn.textContent = (currentIdx === {NUM_Q} - 1) ? 'Finish' : 'Next';
   nextBtn.classList.add('show');
 }}
 
@@ -304,7 +229,6 @@ function selectOption(idx) {{
   var isCorrect = selectedLabel === q.answer_label;
 
   answered[currentIdx] = {{ selectedLabel: selectedLabel, selectedIdx: idx, correct: isCorrect }};
-  state[activeTab].answered = answered;
 
   btns.forEach(function(btn, i) {{
     btn.classList.remove('correct', 'wrong');
@@ -314,8 +238,7 @@ function selectOption(idx) {{
 
   updateScore();
   showFeedback(isCorrect);
-  var total = TOTALS[activeTab];
-  nextBtn.textContent = (currentIdx === total - 1) ? 'Finish' : 'Next';
+  nextBtn.textContent = (currentIdx === {NUM_Q} - 1) ? 'Finish' : 'Next';
   nextBtn.classList.add('show');
 }}
 
@@ -327,25 +250,22 @@ function showFeedback(isCorrect) {{
 }}
 
 prevBtn.addEventListener('click', function() {{
-  if (currentIdx > 0) {{ currentIdx--; state[activeTab].currentIdx = currentIdx; renderQuestion(); }}
+  if (currentIdx > 0) {{ currentIdx--; renderQuestion(); }}
 }});
 
 nextBtn.addEventListener('click', function() {{
-  var total = TOTALS[activeTab];
-  if (currentIdx < total - 1) {{ currentIdx++; state[activeTab].currentIdx = currentIdx; renderQuestion(); }}
+  if (currentIdx < {NUM_Q} - 1) {{ currentIdx++; renderQuestion(); }}
   else {{ showResults(); }}
 }});
 
 function showResults() {{
   quizDone = true;
-  state[activeTab].quizDone = true;
   quizContent.classList.add('hidden');
   results.classList.add('show');
   progressBar.style.width = '100%';
   var s = calcScore();
-  var total = TOTALS[activeTab];
   finalScore.textContent = s;
-  var pct = Math.round(s / total * 100);
+  var pct = Math.round(s / {NUM_Q} * 100);
   finalPct.textContent = pct + '%';
   var html = '<h3 style="margin-bottom:12px">Review Answers</h3>';
   QUESTIONS.forEach(function(q, i) {{
@@ -359,7 +279,6 @@ function showResults() {{
 }}
 
 restartBtn.addEventListener('click', function() {{
-  state[activeTab] = {{ currentIdx: 0, answered: [], quizDone: false }};
   currentIdx = 0;
   answered = [];
   quizDone = false;
@@ -374,7 +293,7 @@ renderQuestion();
 </body>
 </html>'''
 
-with open('index.html', 'w') as f:
+with open('quiz2.html', 'w') as f:
     f.write(html)
 
-print('index.html generated successfully with both quizzes')
+print('quiz2.html generated successfully')

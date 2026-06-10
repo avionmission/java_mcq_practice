@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java FSE Main Test Quiz</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f0f2f5; min-height: 100vh; display: flex; justify-content: center;
+    padding: 20px; color: #1a1a2e;
+  }
+  .container { width: 100%; max-width: 720px; }
+  .header {
+    background: #1a1a2e; color: white; padding: 20px 24px; border-radius: 12px 12px 0 0;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+  }
+  .header h1 { font-size: 20px; font-weight: 600; }
+  .score { font-size: 16px; background: #16213e; padding: 6px 14px; border-radius: 20px; }
+  .progress-wrap { background: #e9ecef; height: 6px; }
+  .progress-bar { height: 100%; background: #0f3460; transition: width 0.3s ease; width: 0%; }
+  .card {
+    background: white; border-radius: 0 0 12px 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 28px 24px 24px;
+  }
+  .q-num { font-size: 13px; color: #6c757d; margin-bottom: 10px; font-weight: 500; }
+  .q-text {
+    font-size: 17px; line-height: 1.6; margin-bottom: 24px; font-weight: 500;
+  }
+  .q-text code, .answer-text code { background: #eef1ff; padding: 1px 5px; border-radius: 4px; font-size: 0.9em; font-family: 'Courier New', monospace; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border: 2px solid #dee2e6; border-radius: 10px; background: white;
+    font-size: 15px; cursor: pointer; transition: all 0.15s ease; text-align: left;
+    line-height: 1.5; width: 100%;
+  }
+  .option-btn:hover { border-color: #0f3460; background: #f8f9ff; }
+  .option-btn .label {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    background: #e9ecef; display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px; transition: all 0.15s ease;
+  }
+  .option-btn.correct { border-color: #28a745; background: #d4edda; }
+  .option-btn.correct .label { background: #28a745; color: white; }
+  .option-btn.wrong { border-color: #dc3545; background: #f8d7da; }
+  .option-btn.wrong .label { background: #dc3545; color: white; }
+  .feedback {
+    margin-top: 20px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+  .feedback.wrong { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+  .feedback .answer-text { margin-top: 5px; }
+  .feedback .answer-text code { background: rgba(0,0,0,0.06); }
+  .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+  .nav-left, .nav-right { display: flex; gap: 10px; }
+  .prev-btn, .next-btn { display: none; padding: 12px 24px; border-radius: 8px;
+    font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.15s ease; }
+  .prev-btn.show, .next-btn.show { display: inline-block; }
+  .prev-btn { background: white; color: #0f3460; border: 2px solid #0f3460; }
+  .prev-btn:hover { background: #f0f2f5; }
+  .next-btn { background: #0f3460; color: white; border: none; }
+  .next-btn:hover { background: #1a1a2e; }
+  .results {
+    display: none; text-align: center; padding: 20px 0;
+  }
+  .results.show { display: block; }
+  .results h2 { font-size: 28px; margin-bottom: 8px; }
+  .results .score-big { font-size: 56px; font-weight: 700; color: #0f3460; margin: 16px 0; }
+  .results .score-big .total { font-size: 28px; color: #6c757d; }
+  .results .pct { font-size: 18px; color: #6c757d; margin-bottom: 24px; }
+  .results .summary { text-align: left; margin-top: 16px; }
+  .results .summary-item {
+    padding: 10px 14px; border-bottom: 1px solid #eee; font-size: 14px;
+  }
+  .results .summary-item:last-child { border-bottom: none; }
+  .results .summary-item .sq-num { font-weight: 600; color: #0f3460; }
+  .results .summary-item .sq-status { display: inline-block; margin-right: 6px; }
+  .restart-btn {
+    margin-top: 20px; padding: 12px 32px; border: 2px solid #0f3460;
+    border-radius: 8px; background: white; color: #0f3460;
+    font-size: 16px; font-weight: 500; cursor: pointer;
+  }
+  .restart-btn:hover { background: #f0f2f5; }
+  .quiz-content { display: block; }
+  .quiz-content.hidden { display: none; }
+  @media (max-width: 500px) {
+    body { padding: 10px; }
+    .header { padding: 14px 16px; }
+    .header h1 { font-size: 17px; }
+    .card { padding: 20px 16px; }
+    .q-text { font-size: 15px; }
+    .option-btn { padding: 12px 14px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Java FSE Main Test</h1>
+    <div class="score">Score: <span id="score">0</span> / <span id="total">63</span></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="card">
+    <div id="quizContent" class="quiz-content">
+      <div class="q-num" id="qNum">Question 1 of 63</div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback">
+        <div id="feedbackMsg"></div>
+        <div class="answer-text" id="feedbackAnswer"></div>
+      </div>
+      <div class="nav-buttons">
+        <div class="nav-left"><button class="prev-btn" id="prevBtn">Previous</button></div>
+        <div class="nav-right"><button class="next-btn" id="nextBtn">Next</button></div>
+      </div>
+    </div>
+    <div class="results" id="results">
+      <h2>Quiz Complete!</h2>
+      <div class="score-big"><span id="finalScore">0</span><span class="total"> / 63</span></div>
+      <div class="pct" id="finalPct">0%</div>
+      <div class="summary" id="summary"></div>
+      <button class="restart-btn" id="restartBtn">Restart Quiz</button>
+    </div>
+  </div>
+</div>
+<script>
+const QUESTIONS = [{"id": 1, "question": "Identify the life cycle methods of JSP.", "options": [{"label": "A", "text": "jspinit(), JspService(), jspDestiny()"}, {"label": "B", "text": "jspinit(), JspService(), jspDestroy()"}, {"label": "C", "text": "jspinit()"}, {"label": "D", "text": "jspInit(), _jspService(), jspDestroy()"}, {"label": "E", "text": "jspService(), jspDestroy()"}], "answer": "jspInit(), _jspService(), jspDestroy()", "answer_label": "D"}, {"id": 2, "question": "Which of the following activity is involved in Sprint Review?", "options": [{"label": "A", "text": "Inspect and seek feedback from the stakeholders."}, {"label": "B", "text": "Seek approval for the work done."}, {"label": "C", "text": "Plan for the release."}, {"label": "D", "text": "Improve Scrum Processes."}], "answer": "Inspect and seek feedback from the stakeholders.", "answer_label": "A"}, {"id": 3, "question": "Which of the following are important responsibilities of a Scrum Master? Select Three.", "options": [{"label": "A", "text": "Removing impediments"}, {"label": "B", "text": "Bridging development team & Product owner to create high-value products"}, {"label": "C", "text": "Facilitating scrum events as requested or needed"}, {"label": "D", "text": "Ordering the items in the Product Backlog"}, {"label": "E", "text": "Changing the Product Backlog item's priority"}], "answer": "Removing impediments", "answer_label": "A"}, {"id": 4, "question": "Which artifact is used to list user stories to be completed in each iteration? Choose the most appropriate option.", "options": [{"label": "A", "text": "Sprint Backlog"}, {"label": "B", "text": "Product Backlog"}, {"label": "C", "text": "Burn up chart"}, {"label": "D", "text": "Burn down chart"}], "answer": "Sprint Backlog", "answer_label": "A"}, {"id": 5, "question": "Which of the following statements are INCORRECT about scrum master?<br>Scrum master facilitates the scrum team and the product owner to perform day to day activities.<br>Scrum master Leads the discussion in Scrum Events or Meetings.<br>Scrum master is Customer who has given the requirements.", "options": [{"label": "A", "text": "All 1, 2 and 3"}, {"label": "B", "text": "only 3"}, {"label": "C", "text": "Both 1 and 2"}, {"label": "D", "text": "Both 1 and 3"}], "answer": "only 3", "answer_label": "B"}, {"id": 6, "question": "Which of the following statements are CORRECT?<br>$(i)$ Scrum Team is a group of 7-10 members with all the skills to develop, test and deliver the working product.<br>$(ii)$ Product Owner is the customer who has given the requirements.", "options": [{"label": "A", "text": "both $(i)$ and $(ii)$"}, {"label": "B", "text": "only $(i)$"}, {"label": "C", "text": "only $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "both $(i)$ and $(ii)$", "answer_label": "A"}, {"id": 7, "question": "What will be the output of the code given?<br>public class Test {<br>public static void main(String[] args) {<br>int accounts[] = {101, 1012, 183};<br>System.out.print(\"A\");<br>int accId = accounts[3]; // Line-X<br>System.out.print(\"B\");<br>}<br>}", "options": [{"label": "A", "text": "Prints 'A' and then throw ArrayIndexOutOfBoundsException"}, {"label": "B", "text": "AB"}, {"label": "C", "text": "Compilation Error at Line-X: Unhandled Exception type ArrayIndexOutOfBoundsException"}, {"label": "D", "text": "A ArrayIndexOutOfBoundsException B"}], "answer": "Prints 'A' and then throw ArrayIndexOutOfBoundsException", "answer_label": "A"}, {"id": 8, "question": "What will be the output of the code given below?<br>public class Test {<br>public static void main(String[] args) {<br>int accounts[] = {101, 1012, 103};<br>try {<br>System.out.print(\"A\");<br>int accId = accounts[3];<br>System.out.print(\"B\");<br>} catch(ArrayIndexOutOfBoundsException exception) {<br>System.out.print(\"E1\");<br>} catch(Exception exception) {<br>System.out.print(\"E2\");<br>}<br>}<br>}", "options": [{"label": "A", "text": "AE1"}, {"label": "B", "text": "AE1 B"}, {"label": "C", "text": "A E1 E2"}, {"label": "D", "text": "A E1 B E2"}], "answer": "AE1", "answer_label": "A"}, {"id": 9, "question": "What would be the output of the code given below?<br>public class Test {<br>public static void main(String[] args) {<br>try {<br>test(8);<br>} catch(Exception exception) {<br>System.out.println(\"exception-Main\");<br>}<br>}<br>public static void test(int data) {<br>if (data > 0) {<br>throw new Exception(); // Line-X<br>}<br>System.out.println(\"End Test\");<br>}<br>}", "options": [{"label": "A", "text": "Compilation Error at Line-X: Unhandled exception type Exception"}, {"label": "B", "text": "exception-Main"}, {"label": "C", "text": "End Test"}, {"label": "D", "text": "exception-Main End Test"}], "answer": "Compilation Error at Line-X: Unhandled exception type Exception", "answer_label": "A"}, {"id": 10, "question": "What would be the output of the code given below?<br>public class Demo {<br>public static void main(String[] args) {<br>try {<br>test();<br>} catch(Exception exception) {<br>System.out.println(\"Main Catch\");<br>}<br>}<br>public static void test() { // Line-X<br>try {<br>// ...<br>} finally {<br>throw new RuntimeException(); // Line-Y<br>System.out.println(\"Test Finally\"); // Unreachable<br>}<br>}<br>}", "options": [{"label": "A", "text": "Test Finally \\n Main Catch"}, {"label": "B", "text": "Test Finally"}, {"label": "C", "text": "Compilation Error at Line-Y: Unreachable statement"}, {"label": "D", "text": "Compilation Error at Line-X: missing exception propagation type ArithmeticException"}], "answer": "Compilation Error at Line-Y: Unreachable statement", "answer_label": "C"}, {"id": 11, "question": "Identify the CORRECT statement with respect to List and Set.<br>$(i)$ The data inserted in List will be in sorted order always<br>$(ii)$ Set allows to insert duplicate values", "options": [{"label": "A", "text": "only $(i)$"}, {"label": "B", "text": "both $(i)$ and $(ii)$"}, {"label": "C", "text": "only $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "neither $(i)$ nor $(ii)$", "answer_label": "D"}, {"id": 12, "question": "What will be the output of the code given below? Assume that all required classes and interfaces are imported.<br>Map<Integer, Integer> myMap = new TreeMap<Integer, Integer>();<br>myMap.put(16, 150);<br>myMap.put(30, 25);<br>myMap.put(20, 50);<br>Set<Integer> keySet = myMap.keySet();<br>for (Integer key: keySet) {<br>System.out.print(myMap.get(key) + \" \");<br>}", "options": [{"label": "A", "text": "150 50 25"}, {"label": "B", "text": "150 25 50"}, {"label": "C", "text": "25 50 150"}, {"label": "D", "text": "50 25 150"}], "answer": "150 50 25", "answer_label": "A"}, {"id": 13, "question": "What will be the output of the code given? Assume that all required classes and interfaces are imported.<br>Set<Integer> mySet = new TreeSet<Integer>();<br>mySet.add(10);<br>mySet.add(3);<br>mySet.add(20);<br>for (Integer data: mySet) {<br>mySet.add(3);<br>System.out.print(data + \" \");<br>}", "options": [{"label": "A", "text": "3 10 20 (Standard academic/conceptual key answer)"}, {"label": "B", "text": "10 3 20"}, {"label": "C", "text": "20 10 3"}, {"label": "D", "text": "10 3 20 3"}], "answer": "3 10 20 (Standard academic/conceptual key answer)", "answer_label": "A"}, {"id": 14, "question": "Which of the following are methods of Thread class? [Choose 2]", "options": [{"label": "A", "text": "start"}, {"label": "B", "text": "wait()"}, {"label": "C", "text": "sleep"}, {"label": "D", "text": "notify()"}], "answer": "start", "answer_label": "A"}, {"id": 15, "question": "Which of the following is CORRECT way to create Thread?<br>$(i)$ Create a class by extending Thread class and override run() method<br>$(ii)$ Create a class by implementing Runnable interface and defining start() method in it", "options": [{"label": "A", "text": "both $(i)$ and $(ii)$"}, {"label": "B", "text": "only $(i)$"}, {"label": "C", "text": "only $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "only $(i)$", "answer_label": "B"}, {"id": 16, "question": "Which of the following is/are the CORRECT declaration of Functional interface?<br>$(i)$<br>interface TestInterface {<br>public void add(int num1, int num2);<br>public default String display(String name) { return null; }<br>}<br>$(ii)$<br>@FunctionalInterface<br>interface TestInterface {<br>public void add(int num1, int num2);<br>public static String display(String name) { return null; }<br>}", "options": [{"label": "A", "text": "both $(i)$ and $(ii)$"}, {"label": "B", "text": "only $(i)$"}, {"label": "C", "text": "only $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "both $(i)$ and $(ii)$", "answer_label": "A"}, {"id": 17, "question": "Which of the following code can be placed at Line-X so that the code displays the output as \"Java\"? [Choose 2]<br>interface TestInterface {<br>void display(String message);<br>}<br>public class Demo1 {<br>public static void main(String[] args) {<br>// Line-X<br>obj.display(\"Java\");<br>}<br>}", "options": [{"label": "A", "text": "TestInterface obj = (message) -> System.out.println(message);"}, {"label": "B", "text": "TestInterface obj = (String message) -> System.out.println(message);"}, {"label": "C", "text": "TestInterface obj = new TestInterface(String message) -> System.out.println(message);"}, {"label": "D", "text": "TestInterface obj = new TestInterface (message) -> System.out.println(message);"}], "answer": "TestInterface obj = (message) -> System.out.println(message);", "answer_label": "A"}, {"id": 18, "question": "Which of the following should be placed at Line-X so that the perform() method is executed only once irrespective of number of invocations of serviceTest1() and serviceTest2() methods?", "options": [{"label": "A", "text": "@AfterAll"}, {"label": "B", "text": "@BeforeAll"}, {"label": "C", "text": "@TestAfterAll"}, {"label": "D", "text": "@TestBeforeAll"}], "answer": "@BeforeAll", "answer_label": "B"}, {"id": 19, "question": "Which of the following annotation is used to read the values from CSV FILE for parameterized test?", "options": [{"label": "A", "text": "@CsvSource"}, {"label": "B", "text": "@CsvFileSource"}, {"label": "C", "text": "@CsvFileValueSource"}, {"label": "D", "text": "@CsvValueSource"}], "answer": "@CsvFileSource", "answer_label": "B"}, {"id": 20, "question": "____________ represents the table along with data in the database.", "options": [{"label": "A", "text": "Statement"}, {"label": "B", "text": "Result"}, {"label": "C", "text": "ResultSet"}, {"label": "D", "text": "Connection"}], "answer": "ResultSet", "answer_label": "C"}, {"id": 21, "question": "Which of the following interfaces in JDBC can be used to execute SQL statements? [Choose 2]", "options": [{"label": "A", "text": "Statement"}, {"label": "B", "text": "PreparedStatement"}, {"label": "C", "text": "ResultSet"}, {"label": "D", "text": "PrepareStatement"}], "answer": "Statement", "answer_label": "A"}, {"id": 22, "question": "Identify the CORRECT code which needs to be written to update salary to 500.75 for employee whose employeeId is 1001.<br>UPDATE employee SET salary=? WHERE employeeId=?", "options": [{"label": "A", "text": "pstmt.setDouble(1, 500.75); \\n pstmt.setInt(2, 1001); \\n pstmt.executeUpdate();"}, {"label": "B", "text": "pstmt.setInt(1, 1001); \\n pstmt.setDouble(2, 500.75); \\n pstmt.executeUpdate();"}, {"label": "C", "text": "pstmt.setInt(2, 1001); \\n pstmt.setDouble(1, 500.75); \\n pstmt.executeQuery();"}, {"label": "D", "text": "pstmt.setInt(1, 1001); \\n pstmt.setDouble(2, 500.75); \\n pstmt.Update();"}], "answer": "pstmt.setDouble(1, 500.75); \\n pstmt.setInt(2, 1001); \\n pstmt.executeUpdate();", "answer_label": "A"}, {"id": 23, "question": "Which of the following is/are CORRECT statement(s)?<br>$(i)$ JDBC driver is Database dependent<br>$(ii)$ JDBC has in built driver to connect to database", "options": [{"label": "A", "text": "both $(i)$ and $(ii)$"}, {"label": "B", "text": "only $(ii)$"}, {"label": "C", "text": "only $(i)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "only $(i)$", "answer_label": "C"}, {"id": 24, "question": "What will happen in the customer table, if the below JPA code executes successfully?<br>CustomerEntity entity = new CustomerEntity();<br>entity.setCustomerId(1001);<br>entity.setCustomerName(\"Justin\");<br>entityManager.getTransaction().begin();<br>entityManager.merge(entity); // Line X<br>entityManager.getTransaction().commit();", "options": [{"label": "A", "text": "Deletes record with customerId \"1001\" and inserts a record with customerName \"Justin\""}, {"label": "B", "text": "Just updates customerName to \"Justin\" whose customerId is 1001"}, {"label": "C", "text": "Runtime Error at Line X: Duplicate entry for id"}, {"label": "D", "text": "Inserts a new record with customerId \"1001\" and customerName \"Justin\""}], "answer": "Just updates customerName to \"Justin\" whose customerId is 1001", "answer_label": "B"}, {"id": 25, "question": "Choose from below a valid option that is used to update the SeatingCapacity.", "options": [{"label": "A", "text": "Option 1 (Modifies the entity before transaction and without merging return mapping)"}, {"label": "B", "text": "Option 2:<br>ClassRoomEntity classRoom = new ClassRoomEntity();<br>classRoom.setClassRoomNumber(1001);<br>entityManager.getTransaction().begin();<br>classRoom = entityManager.merge(classRoom);<br>classRoom.setSeatingCapacity(29);<br>entityManager.getTransaction().commit();"}, {"label": "C", "text": "Option 3 (No begin/commit block structured correctly)"}, {"label": "D", "text": "Option 4 (Missing transaction begin/commit commits)"}], "answer": "Option 2:<br>ClassRoomEntity classRoom = new ClassRoomEntity();<br>classRoom.setClassRoomNumber(1001);<br>entityManager.getTransaction().begin();<br>classRoom = entityManager.merge(classRoom);<br>classRoom.setSeatingCapacity(29);<br>entityManager.getTransaction().commit();", "answer_label": "B"}, {"id": 26, "question": "Choose from below a valid option to complete the above code, in the order as it appears: Emp(emp_id, employeeName).", "options": [{"label": "A", "text": "@Table(name = \"Emp\"), @Column(name=\"emp_id\")"}, {"label": "B", "text": "@Table(name = \"Emp\"), @Column(\"emp_id\")"}, {"label": "C", "text": "@Table(name = \"Employee\"), @Column(name=\"employeeld\")"}, {"label": "D", "text": "@Table(name = \"Employee\"), @Column(name=\"employee_id\")"}], "answer": "@Table(name = \"Emp\"), @Column(name=\"emp_id\")", "answer_label": "A"}, {"id": 27, "question": "Choose from below a valid EntityManager declaration.", "options": [{"label": "A", "text": "EntityManager em = Persistence.createEntityManager(\"unit1\");"}, {"label": "B", "text": "EntityManager em = emf.entityManager(\"unit1\");"}, {"label": "C", "text": "EntityManager em = emf.createEntityManager();"}, {"label": "D", "text": "EntityManager em = emf.createEntityManager(\"unit1\");"}], "answer": "EntityManager em = emf.createEntityManager();", "answer_label": "C"}, {"id": 28, "question": "What would be the state of the Employee Entity Object after executing code at Line-X (em.remove(entity) followed by transaction commit)?", "options": [{"label": "A", "text": "Detached"}, {"label": "B", "text": "Managed"}, {"label": "C", "text": "New"}, {"label": "D", "text": "Removed"}], "answer": "Removed", "answer_label": "D"}, {"id": 29, "question": "Identify the appropriate JPQL code (Query creation) to fetch details from Employee table.", "options": [{"label": "A", "text": "Query query = entityManager.createNamedQuery(\"FindEmpDetails\");"}, {"label": "B", "text": "Query query = entityManager.createQuery(\"FindEmpDetails\");"}, {"label": "C", "text": "NamedQuery query = entityManager.createNamedQuery(\"FindEmpDetails\");"}, {"label": "D", "text": "Query query = entityManager.createNamedQuery(\"EmployeeEntity.FindEmpDetails\");"}], "answer": "Query query = entityManager.createNamedQuery(\"FindEmpDetails\");", "answer_label": "A"}, {"id": 30, "question": "Which of the following is not a JSP implicit object? Choose the most appropriate option.", "options": [{"label": "A", "text": "taglib"}, {"label": "B", "text": "session"}, {"label": "C", "text": "exception"}, {"label": "D", "text": "response"}], "answer": "taglib", "answer_label": "A"}, {"id": 31, "question": "What would be the output of the below JSP code after sending 5 consecutive requests?<br><%! int data1=10; %><br><% int data2=20; %><br><%<br>data1 = data1 + 1;<br>data2 = data2 + 1;<br>%><br><%= data1 %> <br><br><%= data2 %>", "options": [{"label": "A", "text": "15 \\n 21"}, {"label": "B", "text": "15 \\n 25"}, {"label": "C", "text": "11 \\n 25"}, {"label": "D", "text": "11 \\n 21"}], "answer": "15 \\n 21", "answer_label": "A"}, {"id": 32, "question": "What would be the output of the JSP code after sending 5 consecutive requests?<br><%! int data=10;<br>public void jspInit(){<br>data=20;<br>}<br>%><br><% data = data+1; %><br><%= data %>", "options": [{"label": "A", "text": "25"}, {"label": "B", "text": "11"}, {"label": "C", "text": "15"}, {"label": "D", "text": "21"}], "answer": "25", "answer_label": "A"}, {"id": 33, "question": "Which of the following statement(s) is/are CORRECT with respect to JSP?<br>$(i)$ Default scope of a variable is request. (Incorrect, it is page)<br>$(ii)$ Application scope variable will be available in all JSP files irrespective of session in which it is accessed. (Correct)<br>$(iii)$ JSTL codes are not placed inside service() method of translated servlet. (Incorrect)", "options": [{"label": "A", "text": "both $(ii)$ and $(iii)$"}, {"label": "B", "text": "both $(i)$ and $(ii)$"}, {"label": "C", "text": "only $(ii)$"}, {"label": "D", "text": "both $(i)$ and $(iii)$"}], "answer": "only $(ii)$", "answer_label": "C"}, {"id": 34, "question": "Which of the following three search criteria are available under rules in SonarQube?", "options": [{"label": "A", "text": "Language"}, {"label": "B", "text": "Type"}, {"label": "C", "text": "Tag"}, {"label": "D", "text": "develop"}, {"label": "E", "text": "Date"}], "answer": "Language", "answer_label": "A"}, {"id": 35, "question": "Which one of the following is not a severity in SonarQube?", "options": [{"label": "A", "text": "Major"}, {"label": "B", "text": "Critical"}, {"label": "C", "text": "Blocker"}, {"label": "D", "text": "Issues"}], "answer": "Issues", "answer_label": "D"}, {"id": 36, "question": "Which of the following is not a Build tool?", "options": [{"label": "A", "text": "Maven"}, {"label": "B", "text": "Gradle"}, {"label": "C", "text": "Ant"}, {"label": "D", "text": "Jenkins"}], "answer": "Jenkins", "answer_label": "D"}, {"id": 37, "question": "Which one of the following is not a value for 'dependency scope' in Maven?", "options": [{"label": "A", "text": "test"}, {"label": "B", "text": "compile"}, {"label": "C", "text": "system"}, {"label": "D", "text": "export"}], "answer": "export", "answer_label": "D"}, {"id": 38, "question": "Which of the following statements is/are true for the static code analysis?<br>It is done without code execution.<br>It deals with behavior of code during execution.<br>It deals with adherence to coding standards and presence of potential bugs.", "options": [{"label": "A", "text": "both 1 and 3"}, {"label": "B", "text": "only 2"}, {"label": "C", "text": "both 2 and 3"}, {"label": "D", "text": "All 1, 2 and 3"}], "answer": "both 1 and 3", "answer_label": "A"}, {"id": 39, "question": "Choose from below a valid option to complete the servlet code, in the order as it appears.", "options": [{"label": "A", "text": "@WebServlet, urlPatterns, HttpServlet, request.getParameter, request.getRequestDispatcher, name"}, {"label": "B", "text": "@Servlet, url, HttpServlet, request.getAttribute, request.getDispatcher, path"}, {"label": "C", "text": "@WebServlet, urlPatterns, HttpServlet, response.getParameter, response.getRequestDispatcher, name"}, {"label": "D", "text": "@Web.url.Servlet, request.getAttribute, request.getDispatcher, name"}], "answer": "@WebServlet, urlPatterns, HttpServlet, request.getParameter, request.getRequestDispatcher, name", "answer_label": "A"}, {"id": 40, "question": "Choose from below a valid option to complete the main entry code, in the order as it appears.", "options": [{"label": "A", "text": "@ComponentScan, SpringApplication.run(Application.class, args);"}, {"label": "B", "text": "@SpringBootApplication, SpringApplication.run(Application.class, args);"}, {"label": "C", "text": "@EnableAutoConfiguration, SpringApplication.run(Application.class, args);"}, {"label": "D", "text": "@Configuration, SpringApplication.run(Application.class, args);"}], "answer": "@SpringBootApplication, SpringApplication.run(Application.class, args);", "answer_label": "B"}, {"id": 41, "question": "Which maven dependency is used to create a spring boot web application?", "options": [{"label": "A", "text": "Option 1 (Tags for artifactId and groupId are incorrectly swapped)"}, {"label": "B", "text": "Option 2 (Points to spring-boot-starter-parent instead)"}, {"label": "C", "text": "Option 3 (Points to spring-boot-maven-plugin instead)"}, {"label": "D", "text": "Option 4:<br><dependency><br><groupId>org.springframework.boot</groupId><br><artifactId>spring-boot-starter-web</artifactId><br></dependency>"}], "answer": "Option 4:<br><dependency><br><groupId>org.springframework.boot</groupId><br><artifactId>spring-boot-starter-web</artifactId><br></dependency>", "answer_label": "D"}, {"id": 42, "question": "Choose from below a valid option representing the proper name of the default properties files in SpringBoot.<br>$(i)$ application.properties<br>$(ii)$ web.xml<br>$(iii)$ application.xml", "options": [{"label": "A", "text": "only $(i)$"}, {"label": "B", "text": "both $(i)$ and $(iii)$"}, {"label": "C", "text": "both $(ii)$ and $(iii)$"}, {"label": "D", "text": "all $(i)$, $(ii)$ and $(iii)$"}], "answer": "only $(i)$", "answer_label": "A"}, {"id": 43, "question": "Which of the following statement(s) is/are CORRECT with respect to Spring MVC?<br>$(i)$ A Spring MVC application can have multiple child context.<br>$(ii)$ Child context belongs to Dispatcher Servlet.", "options": [{"label": "A", "text": "both $(i)$ and $(ii)$"}, {"label": "B", "text": "only $(i)$"}, {"label": "C", "text": "only $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "both $(i)$ and $(ii)$", "answer_label": "A"}, {"id": 44, "question": "Choose from below a valid option to complete the incomplete Spring MVC Controller Exception Handler, in the order as it appears.", "options": [{"label": "A", "text": "@ExceptionHandler, ExceptionHandlerPage, addObject, ${message}"}, {"label": "B", "text": "@Exception, ExceptionHandlerPage, addObject, ${message}"}, {"label": "C", "text": "@ExceptionHandler, ExceptionHandler, addObject, ${message}"}, {"label": "D", "text": "@ExceptionHandler, ExceptionHandlerPage, addMessage, #{message}"}], "answer": "@ExceptionHandler, ExceptionHandlerPage, addObject, ${message}", "answer_label": "A"}, {"id": 45, "question": "Choose from below a valid option in the order as it appears to complete the Spring MVC URL routing mapping code:", "options": [{"label": "A", "text": "@RequestMapping, RequestMethod.POST"}, {"label": "B", "text": "@RequestMapping, RequestMethod.GET"}, {"label": "C", "text": "@RequestMapping, @RequestMethod(value=\"POST\")"}, {"label": "D", "text": "@RequestMapping, @RequestMethod(value=\"GET\")"}], "answer": "@RequestMapping, RequestMethod.POST", "answer_label": "A"}, {"id": 46, "question": "Choose from below a valid option to complete the REST controller endpoint, in the order as it appears.", "options": [{"label": "A", "text": "@RestController, @ResponseBody, ResponseEntity"}, {"label": "B", "text": "@RestController, @RequestBody, ResponseEntity"}, {"label": "C", "text": "@RestController, @RequestMapping, ResponseEntity"}, {"label": "D", "text": "@RestController, @RequestMapping, @ResponseEntity"}], "answer": "@RestController, @RequestMapping, ResponseEntity", "answer_label": "C"}, {"id": 47, "question": "Choose from below a valid option to complete the configuration properties for Custom Security login context.", "options": [{"label": "A", "text": "post, dispCstLogin.html, cstSecureLogin"}, {"label": "B", "text": "post, cstSecureLogin, dispCstLogin.html"}, {"label": "C", "text": "get, dispCstLogin.html, cstSecureLogin"}, {"label": "D", "text": "get, cstSecureLogin, dispCstLogin.html"}], "answer": "post, cstSecureLogin, dispCstLogin.html", "answer_label": "B"}, {"id": 48, "question": "Which of the following is CORRECT with respect to Spring?<br>$(i)$ @Configuration is used to declare a XML file as Spring configuration. (Incorrect, it declares Java-based configs)<br>$(ii)$ @ComponentScan is used to scan stereotype annotations. (Correct)", "options": [{"label": "A", "text": "only $(ii)$"}, {"label": "B", "text": "only $(i)$"}, {"label": "C", "text": "both $(i)$ and $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "only $(ii)$", "answer_label": "A"}, {"id": 49, "question": "Choose from below a valid SpEL to inject the cart object in Customer bean.", "options": [{"label": "A", "text": "@Value(\"#{cartObj}\")"}, {"label": "B", "text": "@Value(\"${cartObj}\")"}, {"label": "C", "text": "@Value(\"{cartObj}\")"}, {"label": "D", "text": "@Value(\"cartObj\")"}], "answer": "@Value(\"#{cartObj}\")", "answer_label": "A"}, {"id": 50, "question": "Which of the following are the autowiring modes in spring? [Choose 2]", "options": [{"label": "A", "text": "byName"}, {"label": "B", "text": "constructor"}, {"label": "C", "text": "byConstructor"}, {"label": "D", "text": "autoType"}], "answer": "byName", "answer_label": "A"}, {"id": 51, "question": "Which of the following statement[s] is/are CORRECT?<br>$(i)$ JVM Supports IOC<br>$(ii)$ Spring Container manages the instance of the beans mentioned in configuration and provides them back to code when needed", "options": [{"label": "A", "text": "only $(i)$"}, {"label": "B", "text": "only $(ii)$"}, {"label": "C", "text": "both $(i)$ and $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "only $(ii)$", "answer_label": "B"}, {"id": 52, "question": "How many Employee objects will be created if the code executes successfully? Bean scope is declared as prototype.<br>Employee emp1 = (Employee) context.getBean(\"emp\");<br>Employee emp2 = (Employee) context.getBean(\"emp\");<br>Employee emp3 = emp1;", "options": [{"label": "A", "text": "1"}, {"label": "B", "text": "2"}, {"label": "C", "text": "3"}, {"label": "D", "text": "4"}], "answer": "2", "answer_label": "B"}, {"id": 53, "question": "Choose from below a valid option to complete the configuration XML/DAO blocks, in the order as it appears.", "options": [{"label": "A", "text": "DriverManagerDataSource, LocalContainerEntityManagerFactoryBean, @Repository, @Autowired"}, {"label": "B", "text": "DriverManagerDataSource, LocalContainerEntityManagerFactory, @Repository, @Qualifier"}, {"label": "C", "text": "JDBCDriverManagerDataSource, LocalEntityManagerFactoryBean, @Component, @PersistenceContext"}, {"label": "D", "text": "SQLDataSource, JNDIEntityManagerFactoryBean, @Configuration, @Inject"}], "answer": "DriverManagerDataSource, LocalContainerEntityManagerFactoryBean, @Repository, @Autowired", "answer_label": "A"}, {"id": 54, "question": "Choose the valid implementation of the delete query to delete customers who have credit less than a particular value.", "options": [{"label": "A", "text": "Option 1:<br>@Modifying<br>@Query(\"delete from CustomerEntity k where k.credit < :cpoint\")<br>int delete(@Param(\"cpoint\") double credit);"}, {"label": "B", "text": "Option 2:<br>@Query(\"delete from CustomerEntity k where k.credit > :cpoint\")<br>int delete(@Param(\"cpoint\") double credit);"}, {"label": "C", "text": "Option 3:<br>@Query(\"delete from CustomerEntity k where k.credit > :cpoint\")<br>int delete(double cpoint);"}, {"label": "D", "text": "Option 4:<br>@Modifying<br>@Query(\"delete from CustomerEntity k\")<br>int delete(@Param(\"cpoint\") double credit);"}], "answer": "Option 1:<br>@Modifying<br>@Query(\"delete from CustomerEntity k where k.credit < :cpoint\")<br>int delete(@Param(\"cpoint\") double credit);", "answer_label": "A"}, {"id": 55, "question": "Which of the following is/are CORRECT with respect to Spring transaction methods?<br>$(i)$ If a method throws runtime/unchecked exception, then rollback will be triggered implicitly<br>$(ii)$ If a method throws checked exception, then rollback will be triggered implicitly", "options": [{"label": "A", "text": "both $(i)$ and $(ii)$"}, {"label": "B", "text": "only $(i)$"}, {"label": "C", "text": "only $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "only $(i)$", "answer_label": "B"}, {"id": 56, "question": "Which of the following is CORRECT with respect to Spring transaction propagation types?<br>$(i)$ propagation type Propagation.REQUIRED starts a new transaction, if a method is invoked from another method and a transaction does not exist.<br>$(ii)$ propagation type Propagation.REQUIRES_NEW starts a new transaction, if a method is invoked from another method and a transaction already exists.", "options": [{"label": "A", "text": "both $(i)$ and $(ii)$"}, {"label": "B", "text": "only $(i)$"}, {"label": "C", "text": "only $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "both $(i)$ and $(ii)$", "answer_label": "A"}, {"id": 57, "question": "Choose from below a valid option to complete the incomplete Transactional Service method annotation code.", "options": [{"label": "A", "text": "@Transactional(value = \"txManager\", noRollbackFor = RuntimeException.class)"}, {"label": "B", "text": "@Transactional(value = \"txManager\")"}, {"label": "C", "text": "@Transactional(value = \"txManager\", propagation = Propagation.REQUIRES_NEW)"}, {"label": "D", "text": "@Transactional(value = \"txManager\", propagation = RuntimeException.class)"}], "answer": "@Transactional(value = \"txManager\")", "answer_label": "B"}, {"id": 58, "question": "Refer to the Functional interface MyInterface { void test(int a, int b); }. Choose from below a valid Lambda Implementation. [Choose 2] (Assume Java 11)", "options": [{"label": "A", "text": "MyInterface my1 = (a, b) -> System.out.println(\"Result \" + (a+b));"}, {"label": "B", "text": "MyInterface my1 = (var a, var b) -> System.out.println(\"Result \" + (a+b));"}, {"label": "C", "text": "var my1 = (a, b) -> System.out.println(\"Result \" + (a+b)); (Invalid compilation syntax without explicit assignment LHS interface context target)"}, {"label": "D", "text": "var my1 = (int a, int b) -> System.out.println(\"Result \" + (a+b));"}], "answer": "MyInterface my1 = (a, b) -> System.out.println(\"Result \" + (a+b));", "answer_label": "A"}, {"id": 59, "question": "Choose from below the valid option that represents the output of the program:<br>String str1 = \" \";<br>String str2 = \"Hello\";<br>String str3 = \"World\";<br>String str4 = str2 + str1.stripLeading() + str3;<br>System.out.println(str4);", "options": [{"label": "A", "text": "Hello World"}, {"label": "B", "text": "HelloWorld"}, {"label": "C", "text": "NullPointerException"}, {"label": "D", "text": "CompilationError there is no method called stripLeading()"}], "answer": "HelloWorld", "answer_label": "B"}, {"id": 60, "question": "Refer the Incomplete code for the Eureka based Producer application. [Choose 2]", "options": [{"label": "A", "text": "@EnableDiscoveryClient"}, {"label": "B", "text": "@EnableEurekaClient"}, {"label": "C", "text": "@EnableEurekaServer"}, {"label": "D", "text": "@EnableEurekaDiscoveryClient"}], "answer": "@EnableDiscoveryClient", "answer_label": "A"}, {"id": 61, "question": "Which of the Following Annotations is used to create a EurekaServer?", "options": [{"label": "A", "text": "@EnableEurekaServer"}, {"label": "B", "text": "@EnableDiscoveryClient"}, {"label": "C", "text": "@EnableEurekaClient"}, {"label": "D", "text": "@EnableDiscovery"}], "answer": "@EnableEurekaServer", "answer_label": "A"}, {"id": 62, "question": "Which of the following is/are CORRECT statement(s) with respect to Spring Test?<br>$(i)$ @DirtiesContext is used to mark the context dirty so that it can be closed.<br>$(ii)$ @ContextConfiguration can only point to Spring XML configuration but not java configuration.", "options": [{"label": "A", "text": "both $(i)$ and $(ii)$"}, {"label": "B", "text": "only $(i)$"}, {"label": "C", "text": "neither $(i)$ nor $(ii)$"}, {"label": "D", "text": "only $(ii)$"}], "answer": "only $(i)$", "answer_label": "B"}, {"id": 63, "question": "Which of the following is/are CORRECT statement(s) with respect to Spring Test?<br>$(i)$ @ContextConfiguration can point to Spring XML configuration and JAVA configuration.<br>$(ii)$ @ActiveProfiles is used to activate one or more profiles for the test cases.", "options": [{"label": "A", "text": "both $(i)$ and $(ii)$"}, {"label": "B", "text": "only $(i)$"}, {"label": "C", "text": "only $(ii)$"}, {"label": "D", "text": "neither $(i)$ nor $(ii)$"}], "answer": "both $(i)$ and $(ii)$", "answer_label": "A"}];
+
+let currentIdx = 0;
+let answered = [];
+let quizDone = false;
+
+const qNum = document.getElementById('qNum');
+const qText = document.getElementById('qText');
+const options = document.getElementById('options');
+const feedback = document.getElementById('feedback');
+const feedbackMsg = document.getElementById('feedbackMsg');
+const feedbackAnswer = document.getElementById('feedbackAnswer');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const progressBar = document.getElementById('progressBar');
+const scoreEl = document.getElementById('score');
+const quizContent = document.getElementById('quizContent');
+const results = document.getElementById('results');
+const finalScore = document.getElementById('finalScore');
+const finalPct = document.getElementById('finalPct');
+const summary = document.getElementById('summary');
+const restartBtn = document.getElementById('restartBtn');
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function formatText(s) {
+  return (s || '').split(/<br>/gi).map(function(p) {
+    return escapeHtml(p).replace(/`([^`]+)`/g, '<code>$1</code>');
+  }).join('<br>');
+}
+
+function calcScore() {
+  return answered.filter(function(a) { return a && a.correct; }).length;
+}
+
+function updateScore() {
+  scoreEl.textContent = calcScore();
+}
+
+function renderQuestion() {
+  if (quizDone) return;
+  var q = QUESTIONS[currentIdx];
+  qNum.textContent = 'Question ' + (currentIdx + 1) + ' of 63';
+  qText.innerHTML = formatText(q.question);
+
+  options.innerHTML = '';
+  q.options.forEach(function(opt, i) {
+    var btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = '<span class="label">' + opt.label + '</span><span>' + formatText(opt.text) + '</span>';
+    btn.dataset.index = i;
+    btn.addEventListener('click', function() { selectOption(i); });
+    options.appendChild(btn);
+  });
+
+  feedback.classList.remove('show', 'correct', 'wrong');
+  prevBtn.classList.remove('show');
+  nextBtn.classList.remove('show');
+  progressBar.style.width = ((currentIdx + 1) / 63 * 100) + '%';
+
+  if (answered[currentIdx] !== undefined) {
+    applyAnswerState();
+  }
+  if (currentIdx > 0) prevBtn.classList.add('show');
+}
+
+function applyAnswerState() {
+  var state = answered[currentIdx];
+  if (!state) return;
+  var q = QUESTIONS[currentIdx];
+  var btns = options.querySelectorAll('.option-btn');
+  btns.forEach(function(btn, i) {
+    btn.classList.remove('correct', 'wrong');
+    if (q.options[i].label === q.answer_label) btn.classList.add('correct');
+  });
+  if (state.selectedLabel !== q.answer_label) {
+    btns[state.selectedIdx].classList.add('wrong');
+  }
+  showFeedback(state.correct);
+  nextBtn.textContent = (currentIdx === 63 - 1) ? 'Finish' : 'Next';
+  nextBtn.classList.add('show');
+}
+
+function selectOption(idx) {
+  var q = QUESTIONS[currentIdx];
+  var btns = options.querySelectorAll('.option-btn');
+  var selectedLabel = q.options[idx].label;
+  var isCorrect = selectedLabel === q.answer_label;
+
+  answered[currentIdx] = { selectedLabel: selectedLabel, selectedIdx: idx, correct: isCorrect };
+
+  btns.forEach(function(btn, i) {
+    btn.classList.remove('correct', 'wrong');
+    if (q.options[i].label === q.answer_label) btn.classList.add('correct');
+  });
+  if (!isCorrect) btns[idx].classList.add('wrong');
+
+  updateScore();
+  showFeedback(isCorrect);
+  nextBtn.textContent = (currentIdx === 63 - 1) ? 'Finish' : 'Next';
+  nextBtn.classList.add('show');
+}
+
+function showFeedback(isCorrect) {
+  var q = QUESTIONS[currentIdx];
+  feedback.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+  feedbackMsg.textContent = isCorrect ? 'Correct!' : 'Wrong!';
+  feedbackAnswer.innerHTML = '<strong>Answer: ' + q.answer_label + ') </strong>' + formatText(q.answer);
+}
+
+prevBtn.addEventListener('click', function() {
+  if (currentIdx > 0) { currentIdx--; renderQuestion(); }
+});
+
+nextBtn.addEventListener('click', function() {
+  if (currentIdx < 63 - 1) { currentIdx++; renderQuestion(); }
+  else { showResults(); }
+});
+
+function showResults() {
+  quizDone = true;
+  quizContent.classList.add('hidden');
+  results.classList.add('show');
+  progressBar.style.width = '100%';
+  var s = calcScore();
+  finalScore.textContent = s;
+  var pct = Math.round(s / 63 * 100);
+  finalPct.textContent = pct + '%';
+  var html = '<h3 style="margin-bottom:12px">Review Answers</h3>';
+  QUESTIONS.forEach(function(q, i) {
+    var a = answered[i];
+    var status = a && a.correct ? '\u2705' : '\u274C';
+    var label = a ? a.selectedLabel : '-';
+    var shortQ = q.question.replace(/<br>/gi, ' ').slice(0, 80);
+    html += '<div class="summary-item"><span class="sq-status">' + status + '</span><span class="sq-num">Q' + (i+1) + ':</span> ' + escapeHtml(shortQ) + (q.question.replace(/<br>/gi, ' ').length > 80 ? '...' : '') + ' <em>(Your answer: ' + label + ', Correct: ' + q.answer_label + ')</em></div>';
+  });
+  summary.innerHTML = html;
+}
+
+restartBtn.addEventListener('click', function() {
+  currentIdx = 0;
+  answered = [];
+  quizDone = false;
+  scoreEl.textContent = '0';
+  results.classList.remove('show');
+  quizContent.classList.remove('hidden');
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+</body>
+</html>

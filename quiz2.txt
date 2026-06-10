@@ -1,0 +1,1281 @@
+Java FSE Main Test - Questions, Options, and Answers Reference Guide
+
+This document contains the complete set of questions, all listed choices, and the verified correct answers extracted directly from the exam screenshots in IQA_AD.pdf.
+
+1. JSP Life Cycle Methods (Page 1)
+
+Question #18: Identify the life cycle methods of JSP.
+
+Options:
+
+[ ] jspinit(), JspService(), jspDestiny()
+
+[ ] jspinit(), JspService(), jspDestroy()
+
+[ ] jspinit()
+
+[x] jspInit(), _jspService(), jspDestroy() (Note: Standard specifications declare the service phase as _jspService())
+
+[ ] jspService(), jspDestroy()
+
+Correct Answer: jspInit(), _jspService(), jspDestroy()
+
+2. Agile/Scrum - Sprint Review Activity (Page 2)
+
+Question #1: Which of the following activity is involved in Sprint Review?
+
+Options:
+
+[x] Inspect and seek feedback from the stakeholders.
+
+[ ] Seek approval for the work done.
+
+[ ] Plan for the release.
+
+[ ] Improve Scrum Processes.
+
+Correct Answer: Inspect and seek feedback from the stakeholders.
+
+3. Scrum Master Responsibilities (Page 3)
+
+Question #1: Which of the following are important responsibilities of a Scrum Master? Select Three.
+
+Options:
+
+[x] Removing impediments
+
+[x] Bridging development team & Product owner to create high-value products
+
+[x] Facilitating scrum events as requested or needed
+
+[ ] Ordering the items in the Product Backlog
+
+[ ] Changing the Product Backlog item's priority
+
+Correct Answers:
+
+Removing impediments
+
+Bridging development team & Product owner to create high-value products
+
+Facilitating scrum events as requested or needed
+
+4. Agile/Scrum Iteration Artifact (Page 4)
+
+Question #2: Which artifact is used to list user stories to be completed in each iteration? Choose the most appropriate option.
+
+Options:
+
+[x] Sprint Backlog
+
+[ ] Product Backlog
+
+[ ] Burn up chart
+
+[ ] Burn down chart
+
+Correct Answer: Sprint Backlog
+
+5. Incorrect Statements about Scrum Master (Page 5)
+
+Question #3: Which of the following statements are INCORRECT about scrum master?
+
+Scrum master facilitates the scrum team and the product owner to perform day to day activities.
+
+Scrum master Leads the discussion in Scrum Events or Meetings.
+
+Scrum master is Customer who has given the requirements.
+
+Options:
+
+[ ] All 1, 2 and 3
+
+[x] only 3
+
+[ ] Both 1 and 2
+
+[ ] Both 1 and 3
+
+Correct Answer: only 3 (The Product Owner represents the voice of the customer, not the Scrum Master)
+
+6. Correct Statements about Scrum Roles (Page 6)
+
+Question #3: Which of the following statements are CORRECT?
+
+$(i)$ Scrum Team is a group of 7-10 members with all the skills to develop, test and deliver the working product.
+
+$(ii)$ Product Owner is the customer who has given the requirements.
+
+Options:
+
+[x] both $(i)$ and $(ii)$
+
+[ ] only $(i)$
+
+[ ] only $(ii)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: both $(i)$ and $(ii)$
+
+7. Java Arrays & Exceptions (Page 7)
+
+Question #4: What will be the output of the code given?
+
+public class Test {
+    public static void main(String[] args) {
+        int accounts[] = {101, 1012, 183};
+        System.out.print("A");
+        int accId = accounts[3]; // Line-X
+        System.out.print("B");
+    }
+}
+
+
+Options:
+
+[x] Prints 'A' and then throw ArrayIndexOutOfBoundsException
+
+[ ] AB
+
+[ ] Compilation Error at Line-X: Unhandled Exception type ArrayIndexOutOfBoundsException
+
+[ ] A ArrayIndexOutOfBoundsException B
+
+Correct Answer: Prints 'A' and then throw ArrayIndexOutOfBoundsException
+
+8. Java Exception Handling Output (Page 8)
+
+Question #4: What will be the output of the code given below?
+
+public class Test {
+    public static void main(String[] args) {
+        int accounts[] = {101, 1012, 103};
+        try {
+            System.out.print("A");
+            int accId = accounts[3];
+            System.out.print("B");
+        } catch(ArrayIndexOutOfBoundsException exception) {
+            System.out.print("E1");
+        } catch(Exception exception) {
+            System.out.print("E2");
+        }
+    }
+}
+
+
+Options:
+
+[x] AE1
+
+[ ] AE1 B
+
+[ ] A E1 E2
+
+[ ] A E1 B E2
+
+Correct Answer: AE1
+
+9. Java Checked Exception Propagation (Page 9)
+
+Question #5: What would be the output of the code given below?
+
+public class Test {
+    public static void main(String[] args) {
+        try {
+            test(8);
+        } catch(Exception exception) {
+            System.out.println("exception-Main");
+        }
+    }
+    public static void test(int data) {
+        if (data > 0) {
+            throw new Exception(); // Line-X
+        }
+        System.out.println("End Test");
+    }
+}
+
+
+Options:
+
+[x] Compilation Error at Line-X: Unhandled exception type Exception
+
+[ ] exception-Main
+
+[ ] End Test
+
+[ ] exception-Main End Test
+
+Correct Answer: Compilation Error at Line-X: Unhandled exception type Exception (The checked exception Exception must either be surrounded by a try-catch block or declared in the method signature using throws)
+
+10. Finally Block Unreachable Statement (Page 10)
+
+Question #5: What would be the output of the code given below?
+
+public class Demo {
+    public static void main(String[] args) {
+        try {
+            test();
+        } catch(Exception exception) {
+            System.out.println("Main Catch");
+        }
+    }
+    public static void test() { // Line-X
+        try {
+            // ...
+        } finally {
+            throw new RuntimeException(); // Line-Y
+            System.out.println("Test Finally"); // Unreachable
+        }
+    }
+}
+
+
+Options:
+
+[ ] Test Finally \n Main Catch
+
+[ ] Test Finally
+
+[x] Compilation Error at Line-Y: Unreachable statement (Note: Written as "Unhandled exception type ArithmeticException" in mock OCR, but standard compiler flags any statement immediately following a strict unconditional throw as unreachable code)
+
+[ ] Compilation Error at Line-X: missing exception propagation type ArithmeticException
+
+Correct Answer: Compilation Error due to Unreachable Statement (at the line following the throw statement inside the finally block).
+
+11. Java Collections - List vs Set (Page 11)
+
+Question #6: Identify the CORRECT statement with respect to List and Set.
+
+$(i)$ The data inserted in List will be in sorted order always
+
+$(ii)$ Set allows to insert duplicate values
+
+Options:
+
+[ ] only $(i)$
+
+[ ] both $(i)$ and $(ii)$
+
+[ ] only $(ii)$
+
+[x] neither $(i)$ nor $(ii)$
+
+Correct Answer: neither $(i)$ nor $(ii)$ (Lists maintain insertion order, not sorted order, and Sets strictly prohibit duplicates)
+
+12. TreeMap Order Output (Page 12)
+
+Question #7: What will be the output of the code given below? Assume that all required classes and interfaces are imported.
+
+Map<Integer, Integer> myMap = new TreeMap<Integer, Integer>();
+myMap.put(16, 150);
+myMap.put(30, 25);
+myMap.put(20, 50);
+Set<Integer> keySet = myMap.keySet();
+for (Integer key: keySet) {
+    System.out.print(myMap.get(key) + " ");
+}
+
+
+Options:
+
+[x] 150 50 25
+
+[ ] 150 25 50
+
+[ ] 25 50 150
+
+[ ] 50 25 150
+
+Correct Answer: 150 50 25 (TreeMap automatically sorts keys in natural rising order: 16 -> 20 -> 30, corresponding to values 150 -> 50 -> 25)
+
+13. TreeSet Concurrent Modification (Page 13)
+
+Question #7: What will be the output of the code given? Assume that all required classes and interfaces are imported.
+
+Set<Integer> mySet = new TreeSet<Integer>();
+mySet.add(10);
+mySet.add(3);
+mySet.add(20);
+for (Integer data: mySet) {
+    mySet.add(3);
+    System.out.print(data + " ");
+}
+
+
+Options:
+
+[x] 3 10 20 (Standard academic/conceptual key answer)
+
+[ ] 10 3 20
+
+[ ] 20 10 3
+
+[ ] 10 3 20 3
+
+Correct Answer: 3 10 20 (Note: Programmatically, modifying a Collection during iteration via an enhanced for-loop throws a ConcurrentModificationException. However, in multiple-choice exams testing TreeSet sorting, the conceptual answer is 3 10 20 because TreeSet ignores the duplicate 3).
+
+14. Thread Class Methods (Page 14)
+
+Question #8: Which of the following are methods of Thread class? [Choose 2]
+
+Options:
+
+[x] start
+
+[ ] wait()
+
+[x] sleep
+
+[ ] notify()
+
+Correct Answers: start and sleep (Note: wait() and notify() belong to the Object class)
+
+15. Thread Creation Methods (Page 15)
+
+Question #8: Which of the following is CORRECT way to create Thread?
+
+$(i)$ Create a class by extending Thread class and override run() method
+
+$(ii)$ Create a class by implementing Runnable interface and defining start() method in it
+
+Options:
+
+[ ] both $(i)$ and $(ii)$
+
+[x] only $(i)$
+
+[ ] only $(ii)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: only $(i)$ (Implementing Runnable requires overriding run(), not start())
+
+16. Functional Interface Syntax (Page 16)
+
+Question #9: Which of the following is/are the CORRECT declaration of Functional interface?
+
+$(i)$
+
+interface TestInterface {
+    public void add(int num1, int num2);
+    public default String display(String name) { return null; }
+}
+
+
+$(ii)$
+
+@FunctionalInterface
+interface TestInterface {
+    public void add(int num1, int num2);
+    public static String display(String name) { return null; }
+}
+
+
+Options:
+
+[x] both $(i)$ and $(ii)$
+
+[ ] only $(i)$
+
+[ ] only $(ii)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: both $(i)$ and $(ii)$ (Functional interfaces are allowed to contain any number of default and static methods as long as they specify exactly one abstract method)
+
+17. Lambda Expression Syntax (Page 17 & 18)
+
+Question #10: Which of the following code can be placed at Line-X so that the code displays the output as "Java"? [Choose 2]
+
+interface TestInterface {
+    void display(String message);
+}
+public class Demo1 {
+    public static void main(String[] args) {
+        // Line-X
+        obj.display("Java");
+    }
+}
+
+
+Options:
+
+[x] TestInterface obj = (message) -> System.out.println(message);
+
+[x] TestInterface obj = (String message) -> System.out.println(message);
+
+[ ] TestInterface obj = new TestInterface(String message) -> System.out.println(message);
+
+[ ] TestInterface obj = new TestInterface (message) -> System.out.println(message);
+
+Correct Answers:
+
+TestInterface obj = (message) -> System.out.println(message);
+
+TestInterface obj = (String message) -> System.out.println(message);
+
+18. JUnit 5 Testing Lifecycle (Page 19)
+
+Question #11: Which of the following should be placed at Line-X so that the perform() method is executed only once irrespective of number of invocations of serviceTest1() and serviceTest2() methods?
+
+Options:
+
+[ ] @AfterAll
+
+[x] @BeforeAll (Note: Typo in original options as "Alber All")
+
+[ ] @TestAfterAll
+
+[ ] @TestBeforeAll
+
+Correct Answer: @BeforeAll
+
+19. Parameterized Testing Source (Page 20)
+
+Question #11: Which of the following annotation is used to read the values from CSV FILE for parameterized test?
+
+Options:
+
+[ ] @CsvSource
+
+[x] @CsvFileSource
+
+[ ] @CsvFileValueSource
+
+[ ] @CsvValueSource
+
+Correct Answer: @CsvFileSource
+
+20. JDBC Core Terminology (Page 21)
+
+Question #12: ____________ represents the table along with data in the database.
+
+Options:
+
+[ ] Statement
+
+[ ] Result
+
+[x] ResultSet
+
+[ ] Connection
+
+Correct Answer: ResultSet
+
+21. JDBC SQL Statement Execution (Page 22)
+
+Question #12: Which of the following interfaces in JDBC can be used to execute SQL statements? [Choose 2]
+
+Options:
+
+[x] Statement
+
+[x] PreparedStatement
+
+[ ] ResultSet
+
+[ ] PrepareStatement
+
+Correct Answers: Statement and PreparedStatement
+
+22. JDBC Parameter Indexing Mapping (Page 23)
+
+Question #13: Identify the CORRECT code which needs to be written to update salary to 500.75 for employee whose employeeId is 1001.
+UPDATE employee SET salary=? WHERE employeeId=?
+
+Options:
+
+[x] pstmt.setDouble(1, 500.75); \n pstmt.setInt(2, 1001); \n pstmt.executeUpdate(); (Note: Matching Option 1 from code layout)
+
+[ ] pstmt.setInt(1, 1001); \n pstmt.setDouble(2, 500.75); \n pstmt.executeUpdate();
+
+[ ] pstmt.setInt(2, 1001); \n pstmt.setDouble(1, 500.75); \n pstmt.executeQuery();
+
+[ ] pstmt.setInt(1, 1001); \n pstmt.setDouble(2, 500.75); \n pstmt.Update();
+
+Correct Answer: Option 1 (Parameter index 1 maps to salary, and index 2 maps to employeeId)
+
+23. JDBC Drivers Independence (Page 24)
+
+Question #13: Which of the following is/are CORRECT statement(s)?
+
+$(i)$ JDBC driver is Database dependent
+
+$(ii)$ JDBC has in built driver to connect to database
+
+Options:
+
+[ ] both $(i)$ and $(ii)$
+
+[ ] only $(ii)$
+
+[x] only $(i)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: only $(i)$
+
+24. JPA Merge Behavior (Page 25)
+
+Question #14: What will happen in the customer table, if the below JPA code executes successfully?
+
+CustomerEntity entity = new CustomerEntity();
+entity.setCustomerId(1001);
+entity.setCustomerName("Justin");
+entityManager.getTransaction().begin();
+entityManager.merge(entity); // Line X
+entityManager.getTransaction().commit();
+
+
+Options:
+
+[ ] Deletes record with customerId "1001" and inserts a record with customerName "Justin"
+
+[x] Just updates customerName to "Justin" whose customerId is 1001
+
+[ ] Runtime Error at Line X: Duplicate entry for id
+
+[ ] Inserts a new record with customerId "1001" and customerName "Justin"
+
+Correct Answer: Just updates customerName to "Justin" whose customerId is 1001
+
+25. JPA Active Record Modification (Page 26)
+
+Question #14: Choose from below a valid option that is used to update the SeatingCapacity.
+
+Options:
+
+[ ] Option 1 (Modifies the entity before transaction and without merging return mapping)
+
+[x] Option 2:
+
+ClassRoomEntity classRoom = new ClassRoomEntity();
+classRoom.setClassRoomNumber(1001);
+entityManager.getTransaction().begin();
+classRoom = entityManager.merge(classRoom);
+classRoom.setSeatingCapacity(29);
+entityManager.getTransaction().commit();
+
+
+[ ] Option 3 (No begin/commit block structured correctly)
+
+[ ] Option 4 (Missing transaction begin/commit commits)
+
+Correct Answer: Option 2
+
+26. JPA Object Mapping Annotations (Page 27)
+
+Question #15: Choose from below a valid option to complete the above code, in the order as it appears: Emp(emp_id, employeeName).
+
+Options:
+
+[x] @Table(name = "Emp"), @Column(name="emp_id")
+
+[ ] @Table(name = "Emp"), @Column("emp_id")
+
+[ ] @Table(name = "Employee"), @Column(name="employeeld")
+
+[ ] @Table(name = "Employee"), @Column(name="employee_id")
+
+Correct Answer: @Table(name = "Emp"), @Column(name="emp_id")
+
+27. EntityManager Initialization (Page 28)
+
+Question #15: Choose from below a valid EntityManager declaration.
+
+Options:
+
+[ ] EntityManager em = Persistence.createEntityManager("unit1");
+
+[ ] EntityManager em = emf.entityManager("unit1");
+
+[x] EntityManager em = emf.createEntityManager();
+
+[ ] EntityManager em = emf.createEntityManager("unit1");
+
+Correct Answer: EntityManager em = emf.createEntityManager();
+
+28. JPA Entity States Lifecycle (Page 29)
+
+Question #16: What would be the state of the Employee Entity Object after executing code at Line-X (em.remove(entity) followed by transaction commit)?
+
+Options:
+
+[ ] Detached
+
+[ ] Managed
+
+[ ] New
+
+[x] Removed
+
+Correct Answer: Removed
+
+29. JPQL NamedQuery Target Methods (Page 30)
+
+Question #17: Identify the appropriate JPQL code (Query creation) to fetch details from Employee table.
+
+Options:
+
+[x] Query query = entityManager.createNamedQuery("FindEmpDetails");
+
+[ ] Query query = entityManager.createQuery("FindEmpDetails");
+
+[ ] NamedQuery query = entityManager.createNamedQuery("FindEmpDetails");
+
+[ ] Query query = entityManager.createNamedQuery("EmployeeEntity.FindEmpDetails");
+
+Correct Answer: Query query = entityManager.createNamedQuery("FindEmpDetails");
+
+30. JSP Implicit Objects Exclusion (Page 31)
+
+Question #18: Which of the following is not a JSP implicit object? Choose the most appropriate option.
+
+Options:
+
+[x] taglib
+
+[ ] session
+
+[ ] exception
+
+[ ] response
+
+Correct Answer: taglib (It is a directive, not an implicit object)
+
+31. JSP Declarations and Scriptlets Scopes (Page 32)
+
+Question #19: What would be the output of the below JSP code after sending 5 consecutive requests?
+
+<%! int data1=10; %>
+<% int data2=20; %>
+<%
+   data1 = data1 + 1;
+   data2 = data2 + 1;
+%>
+<%= data1 %> <br>
+<%= data2 %>
+
+
+Options:
+
+[x] 15 \n 21
+
+[ ] 15 \n 25
+
+[ ] 11 \n 25
+
+[ ] 11 \n 21
+
+Correct Answer: 15 \n 21 (Declaration variables <%! %> run once at load/compilation time; standard scriptlets <% %> re-instantiate local variables on every request)
+
+32. JSP Init Method Lifetime (Page 33)
+
+Question #19: What would be the output of the JSP code after sending 5 consecutive requests?
+
+<%! int data=10;
+    public void jspInit(){
+        data=20;
+    }
+%>
+<% data = data+1; %>
+<%= data %>
+
+
+Options:
+
+[x] 25
+
+[ ] 11
+
+[ ] 15
+
+[ ] 21
+
+Correct Answer: 25 (jspInit() runs once during servlet setup initializing variables to 20, followed by 5 requests incrementing it to 25)
+
+33. JSP Scopes Assessment (Page 34)
+
+Question #20: Which of the following statement(s) is/are CORRECT with respect to JSP?
+
+$(i)$ Default scope of a variable is request. (Incorrect, it is page)
+
+$(ii)$ Application scope variable will be available in all JSP files irrespective of session in which it is accessed. (Correct)
+
+$(iii)$ JSTL codes are not placed inside service() method of translated servlet. (Incorrect)
+
+Options:
+
+[ ] both $(ii)$ and $(iii)$
+
+[ ] both $(i)$ and $(ii)$
+
+[x] only $(ii)$
+
+[ ] both $(i)$ and $(iii)$
+
+Correct Answer: only $(ii)$
+
+34. SonarQube Rules Query Criteria (Page 35)
+
+Question #21: Which of the following three search criteria are available under rules in SonarQube?
+
+Options:
+
+[x] Language
+
+[x] Type
+
+[x] Tag
+
+[ ] develop
+
+[ ] Date
+
+Correct Answers: Language, Type, and Tag
+
+35. SonarQube Severities Exclusion (Page 36)
+
+Question #21: Which one of the following is not a severity in SonarQube?
+
+Options:
+
+[ ] Major
+
+[ ] Critical
+
+[ ] Blocker
+
+[x] Issues
+
+Correct Answer: Issues (This is a categorization metric, not a severity level)
+
+36. Continuous Integration vs Build (Page 37)
+
+Question #22: Which of the following is not a Build tool?
+
+Options:
+
+[ ] Maven
+
+[ ] Gradle
+
+[ ] Ant
+
+[x] Jenkins
+
+Correct Answer: Jenkins (Jenkins is a CI/CD automation server, not a build compiler engine like Maven, Gradle, or Ant)
+
+37. Maven Dependency Scopes (Page 38)
+
+Question #22: Which one of the following is not a value for 'dependency scope' in Maven?
+
+Options:
+
+[ ] test
+
+[ ] compile
+
+[ ] system
+
+[x] export
+
+Correct Answer: export
+
+38. Static Analysis Scope (Page 39)
+
+Question #23: Which of the following statements is/are true for the static code analysis?
+
+It is done without code execution.
+
+It deals with behavior of code during execution.
+
+It deals with adherence to coding standards and presence of potential bugs.
+
+Options:
+
+[x] both 1 and 3
+
+[ ] only 2
+
+[ ] both 2 and 3
+
+[ ] All 1, 2 and 3
+
+Correct Answer: both 1 and 3
+
+39. Servlet Lifecycle Integration (Page 40)
+
+Question #24: Choose from below a valid option to complete the servlet code, in the order as it appears.
+
+Options:
+
+[x] @WebServlet, urlPatterns, HttpServlet, request.getParameter, request.getRequestDispatcher, name
+
+[ ] @Servlet, url, HttpServlet, request.getAttribute, request.getDispatcher, path
+
+[ ] @WebServlet, urlPatterns, HttpServlet, response.getParameter, response.getRequestDispatcher, name
+
+[ ] @Web.url.Servlet, request.getAttribute, request.getDispatcher, name
+
+Correct Answer: Option 1
+
+40. Spring Boot Main Application (Page 41)
+
+Question #25: Choose from below a valid option to complete the main entry code, in the order as it appears.
+
+Options:
+
+[ ] @ComponentScan, SpringApplication.run(Application.class, args);
+
+[x] @SpringBootApplication, SpringApplication.run(Application.class, args);
+
+[ ] @EnableAutoConfiguration, SpringApplication.run(Application.class, args);
+
+[ ] @Configuration, SpringApplication.run(Application.class, args);
+
+Correct Answer: Option 2
+
+41. Spring Boot Starter Web Coordinates (Page 42)
+
+Question #26: Which maven dependency is used to create a spring boot web application?
+
+Options:
+
+[ ] Option 1 (Tags for artifactId and groupId are incorrectly swapped)
+
+[ ] Option 2 (Points to spring-boot-starter-parent instead)
+
+[ ] Option 3 (Points to spring-boot-maven-plugin instead)
+
+[x] Option 4:
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+
+Correct Answer: Option 4
+
+42. Spring Boot Defaults Configurations (Page 43)
+
+Question #26: Choose from below a valid option representing the proper name of the default properties files in SpringBoot.
+
+$(i)$ application.properties
+
+$(ii)$ web.xml
+
+$(iii)$ application.xml
+
+Options:
+
+[x] only $(i)$
+
+[ ] both $(i)$ and $(iii)$
+
+[ ] both $(ii)$ and $(iii)$
+
+[ ] all $(i)$, $(ii)$ and $(iii)$
+
+Correct Answer: only $(i)$
+
+43. Spring MVC Context Trees (Page 44)
+
+Question #28: Which of the following statement(s) is/are CORRECT with respect to Spring MVC?
+
+$(i)$ A Spring MVC application can have multiple child context.
+
+$(ii)$ Child context belongs to Dispatcher Servlet.
+
+Options:
+
+[x] both $(i)$ and $(ii)$
+
+[ ] only $(i)$
+
+[ ] only $(ii)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: both $(i)$ and $(ii)$
+
+44. Spring MVC Controller Exception Handling (Page 45)
+
+Question #29: Choose from below a valid option to complete the incomplete Spring MVC Controller Exception Handler, in the order as it appears.
+
+Options:
+
+[x] @ExceptionHandler, ExceptionHandlerPage, addObject, ${message}
+
+[ ] @Exception, ExceptionHandlerPage, addObject, ${message}
+
+[ ] @ExceptionHandler, ExceptionHandler, addObject, ${message}
+
+[ ] @ExceptionHandler, ExceptionHandlerPage, addMessage, #{message}
+
+Correct Answer: Option 1
+
+45. Spring MVC Controller Endpoint Mapping (Page 46)
+
+Question #29: Choose from below a valid option in the order as it appears to complete the Spring MVC URL routing mapping code:
+
+Options:
+
+[x] @RequestMapping, RequestMethod.POST
+
+[ ] @RequestMapping, RequestMethod.GET
+
+[ ] @RequestMapping, @RequestMethod(value="POST")
+
+[ ] @RequestMapping, @RequestMethod(value="GET")
+
+Correct Answer: @RequestMapping, RequestMethod.POST
+
+46. Spring Boot Rest Controller Annotations (Page 47)
+
+Question #30: Choose from below a valid option to complete the REST controller endpoint, in the order as it appears.
+
+Options:
+
+[ ] @RestController, @ResponseBody, ResponseEntity
+
+[ ] @RestController, @RequestBody, ResponseEntity
+
+[x] @RestController, @RequestMapping, ResponseEntity
+
+[ ] @RestController, @RequestMapping, @ResponseEntity
+
+Correct Answer: Option 3
+
+47. Spring Security Configuration Form (Page 48)
+
+Question #31: Choose from below a valid option to complete the configuration properties for Custom Security login context.
+
+Options:
+
+[ ] post, dispCstLogin.html, cstSecureLogin
+
+[x] post, cstSecureLogin, dispCstLogin.html
+
+[ ] get, dispCstLogin.html, cstSecureLogin
+
+[ ] get, cstSecureLogin, dispCstLogin.html
+
+Correct Answer: post, cstSecureLogin, dispCstLogin.html (Method is post, standard processing URL matches form submit endpoint /cstSecureLogin, and the fallback login panel page points to /dispCstLogin.html)
+
+48. Spring Meta Configurations Annotations (Page 49)
+
+Question #32: Which of the following is CORRECT with respect to Spring?
+
+$(i)$ @Configuration is used to declare a XML file as Spring configuration. (Incorrect, it declares Java-based configs)
+
+$(ii)$ @ComponentScan is used to scan stereotype annotations. (Correct)
+
+Options:
+
+[x] only $(ii)$
+
+[ ] only $(i)$
+
+[ ] both $(i)$ and $(ii)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: only $(ii)$
+
+49. Spring EL Expression Parsing (Page 50)
+
+Question #32: Choose from below a valid SpEL to inject the cart object in Customer bean.
+
+Options:
+
+[x] @Value("#{cartObj}")
+
+[ ] @Value("${cartObj}") (Note: This standard format evaluates environment properties placeholder keys, not bean references)
+
+[ ] @Value("{cartObj}")
+
+[ ] @Value("cartObj")
+
+Correct Answer: @Value("#{cartObj}")
+
+50. Spring Autowiring Modes (Page 51)
+
+Question #33: Which of the following are the autowiring modes in spring? [Choose 2]
+
+Options:
+
+[x] byName
+
+[x] constructor
+
+[ ] byConstructor
+
+[ ] autoType
+
+Correct Answers: byName and constructor
+
+51. Inversion of Control Framework (Page 52)
+
+Question #33: Which of the following statement[s] is/are CORRECT?
+
+$(i)$ JVM Supports IOC
+
+$(ii)$ Spring Container manages the instance of the beans mentioned in configuration and provides them back to code when needed
+
+Options:
+
+[ ] only $(i)$
+
+[x] only $(ii)$
+
+[ ] both $(i)$ and $(ii)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: only $(ii)$ (JVM does not support built-in IoC specifications out-of-the-box; it is managed at application framework layers like Spring)
+
+52. Spring Prototype Instantiation Count (Page 53)
+
+Question #34: How many Employee objects will be created if the code executes successfully? Bean scope is declared as prototype.
+
+Employee emp1 = (Employee) context.getBean("emp");
+Employee emp2 = (Employee) context.getBean("emp");
+Employee emp3 = emp1;
+
+
+Options:
+
+[ ] 1
+
+[x] 2
+
+[ ] 3
+
+[ ] 4
+
+Correct Answer: 2 (Two separate prototype requests result in two instantiations; emp3 is simply an object reference copy pointing to emp1)
+
+53. Spring ORM JPA Configurations (Page 54)
+
+Question #35: Choose from below a valid option to complete the configuration XML/DAO blocks, in the order as it appears.
+
+Options:
+
+[x] DriverManagerDataSource, LocalContainerEntityManagerFactoryBean, @Repository, @Autowired
+
+[ ] DriverManagerDataSource, LocalContainerEntityManagerFactory, @Repository, @Qualifier
+
+[ ] JDBCDriverManagerDataSource, LocalEntityManagerFactoryBean, @Component, @PersistenceContext
+
+[ ] SQLDataSource, JNDIEntityManagerFactoryBean, @Configuration, @Inject
+
+Correct Answer: Option 1
+
+54. Spring Data JPA Modification Directives (Page 55)
+
+Question #35: Choose the valid implementation of the delete query to delete customers who have credit less than a particular value.
+
+Options:
+
+[x] Option 1:
+
+@Modifying
+@Query("delete from CustomerEntity k where k.credit < :cpoint")
+int delete(@Param("cpoint") double credit);
+
+
+[ ] Option 2:
+
+@Query("delete from CustomerEntity k where k.credit > :cpoint")
+int delete(@Param("cpoint") double credit);
+
+
+[ ] Option 3:
+
+@Query("delete from CustomerEntity k where k.credit > :cpoint")
+int delete(double cpoint);
+
+
+[ ] Option 4:
+
+@Modifying
+@Query("delete from CustomerEntity k")
+int delete(@Param("cpoint") double credit);
+
+
+Correct Answer: Option 1 (Modifications like SQL DELETE or UPDATE require the @Modifying annotation together with standard parameter binding annotations)
+
+55. Spring Transactional Exception Scopes (Page 56)
+
+Question #36: Which of the following is/are CORRECT with respect to Spring transaction methods?
+
+$(i)$ If a method throws runtime/unchecked exception, then rollback will be triggered implicitly
+
+$(ii)$ If a method throws checked exception, then rollback will be triggered implicitly
+
+Options:
+
+[ ] both $(i)$ and $(ii)$
+
+[x] only $(i)$
+
+[ ] only $(ii)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: only $(i)$ (By default, standard Spring Transaction implementations roll back automatically for Runtime Exceptions, but not checked exceptions)
+
+56. Spring Transaction Propagations (Page 57)
+
+Question #36: Which of the following is CORRECT with respect to Spring transaction propagation types?
+
+$(i)$ propagation type Propagation.REQUIRED starts a new transaction, if a method is invoked from another method and a transaction does not exist.
+
+$(ii)$ propagation type Propagation.REQUIRES_NEW starts a new transaction, if a method is invoked from another method and a transaction already exists.
+
+Options:
+
+[x] both $(i)$ and $(ii)$
+
+[ ] only $(i)$
+
+[ ] only $(ii)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: both $(i)$ and $(ii)$
+
+57. Physical vs Logical Transactions (Page 58)
+
+Question #37: Choose from below a valid option to complete the incomplete Transactional Service method annotation code.
+
+Options:
+
+[ ] @Transactional(value = "txManager", noRollbackFor = RuntimeException.class)
+
+[x] @Transactional(value = "txManager")
+
+[ ] @Transactional(value = "txManager", propagation = Propagation.REQUIRES_NEW)
+
+[ ] @Transactional(value = "txManager", propagation = RuntimeException.class)
+
+Correct Answer: @Transactional(value = "txManager") (Since the enclosing physical transaction wraps logical operations, standard transaction propagation defaults to REQUIRED)
+
+58. Java 11 Lambda Local Variable Typing (Page 59)
+
+Question #38: Refer to the Functional interface MyInterface { void test(int a, int b); }. Choose from below a valid Lambda Implementation. [Choose 2] (Assume Java 11)
+
+Options:
+
+[x] MyInterface my1 = (a, b) -> System.out.println("Result " + (a+b));
+
+[x] MyInterface my1 = (var a, var b) -> System.out.println("Result " + (a+b));
+
+[ ] var my1 = (a, b) -> System.out.println("Result " + (a+b)); (Invalid compilation syntax without explicit assignment LHS interface context target)
+
+[ ] var my1 = (int a, int b) -> System.out.println("Result " + (a+b));
+
+Correct Answers:
+
+MyInterface my1 = (a, b) -> System.out.println("Result " + (a+b));
+
+MyInterface my1 = (var a, var b) -> System.out.println("Result " + (a+b));
+
+59. String Manipulation stripLeading (Page 60)
+
+Question #38: Choose from below the valid option that represents the output of the program:
+
+String str1 = " ";
+String str2 = "Hello";
+String str3 = "World";
+String str4 = str2 + str1.stripLeading() + str3;
+System.out.println(str4);
+
+
+Options:
+
+[ ] Hello World
+
+[x] HelloWorld
+
+[ ] NullPointerException
+
+[ ] CompilationError there is no method called stripLeading()
+
+Correct Answer: HelloWorld (stripLeading() clears the single blank space in str1, turning it into "". Therefore, Hello + "" + World prints as a single concatenated word)
+
+60. Eureka Discovery Client Application Setup (Page 61)
+
+Question #39: Refer the Incomplete code for the Eureka based Producer application. [Choose 2]
+
+Options:
+
+[x] @EnableDiscoveryClient
+
+[x] @EnableEurekaClient
+
+[ ] @EnableEurekaServer
+
+[ ] @EnableEurekaDiscoveryClient
+
+Correct Answers: @EnableDiscoveryClient and @EnableEurekaClient
+
+61. Eureka Registry Server Instance (Page 62)
+
+Question #39: Which of the Following Annotations is used to create a EurekaServer?
+
+Options:
+
+[x] @EnableEurekaServer
+
+[ ] @EnableDiscoveryClient
+
+[ ] @EnableEurekaClient
+
+[ ] @EnableDiscovery
+
+Correct Answer: @EnableEurekaServer
+
+62. Spring Testing CleanContext Scopes (Page 63)
+
+Question #40: Which of the following is/are CORRECT statement(s) with respect to Spring Test?
+
+$(i)$ @DirtiesContext is used to mark the context dirty so that it can be closed.
+
+$(ii)$ @ContextConfiguration can only point to Spring XML configuration but not java configuration.
+
+Options:
+
+[ ] both $(i)$ and $(ii)$
+
+[x] only $(i)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+[ ] only $(ii)$
+
+Correct Answer: only $(i)$
+
+63. Spring Testing Profile Setup (Page 64)
+
+Question #40: Which of the following is/are CORRECT statement(s) with respect to Spring Test?
+
+$(i)$ @ContextConfiguration can point to Spring XML configuration and JAVA configuration.
+
+$(ii)$ @ActiveProfiles is used to activate one or more profiles for the test cases.
+
+Options:
+
+[x] both $(i)$ and $(ii)$
+
+[ ] only $(i)$
+
+[ ] only $(ii)$
+
+[ ] neither $(i)$ nor $(ii)$
+
+Correct Answer: both $(i)$ and $(ii)$
