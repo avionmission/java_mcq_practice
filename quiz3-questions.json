@@ -1,0 +1,854 @@
+[
+  {
+    "id": 1,
+    "question": "Which of the following is apt definition for DevOps?",
+    "options": [
+      {
+        "label": "A",
+        "text": "An Automation"
+      },
+      {
+        "label": "B",
+        "text": "A methodology"
+      },
+      {
+        "label": "C",
+        "text": "A department"
+      },
+      {
+        "label": "D",
+        "text": "A movement to improve communication and colaboration"
+      }
+    ],
+    "answer": "A movement to improve communication and colaboration",
+    "answer_label": "D"
+  },
+  {
+    "id": 2,
+    "question": "Which of the following activity is involved in Sprint Review?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Inspect and seek feedback from the stakeholders."
+      },
+      {
+        "label": "B",
+        "text": "seek approval for the work done"
+      },
+      {
+        "label": "C",
+        "text": "plan for the release"
+      },
+      {
+        "label": "D",
+        "text": "improve Scrum Processes"
+      }
+    ],
+    "answer": "Inspect and seek feedback from the stakeholders.",
+    "answer_label": "A"
+  },
+  {
+    "id": 3,
+    "question": "Which of the following statements are INCORRECT about scrum master? 1. Scrum master facilitates the scrum team and the product owner to perform day to day activities 2. Scrum master Leads the discussion in Scrum Events or Meetings 3. Scrum master is Customer who has given the requirements",
+    "options": [
+      {
+        "label": "A",
+        "text": "All 1, 2 and 3"
+      },
+      {
+        "label": "B",
+        "text": "only 3"
+      },
+      {
+        "label": "C",
+        "text": "Both 1 and 2"
+      },
+      {
+        "label": "D",
+        "text": "Both 1 and 3"
+      }
+    ],
+    "answer": "Both 1 and 3",
+    "answer_label": "D"
+  },
+  {
+    "id": 4,
+    "question": "What will be the output of the code given below?<br>public class Test {<br>public static void main(String[] args) {<br>int accounts[] = {101, 1012, 103};<br>try {<br>System.out.print(\"A\");<br>int accId = accounts[2];<br>System.out.print(\"B\");<br>} catch(ArrayIndexOutOfBoundsException exception) {<br>System.out.print(\"E1\");<br>} finally {<br>System.out.print(\"F1\");<br>}<br>}<br>}",
+    "options": [
+      {
+        "label": "A",
+        "text": "A B F1"
+      },
+      {
+        "label": "B",
+        "text": "A E1"
+      },
+      {
+        "label": "C",
+        "text": "A E1 F1"
+      },
+      {
+        "label": "D",
+        "text": "A F1"
+      }
+    ],
+    "answer": "A B F1",
+    "answer_label": "A"
+  },
+  {
+    "id": 5,
+    "question": "What would be the output of the code given below?<br>public class Demo {<br>public static void main(String[] args) {<br>try {<br>test();<br>} catch(Exception exception) {<br>System.out.println(\"Main Catch\");<br>}<br>}<br>public static void test() { // Line-X<br>try {<br>throw new RuntimeException(); // Line-Y<br>} finally {<br>System.out.println(\"Test Finally\");<br>}<br>}<br>}",
+    "options": [
+      {
+        "label": "A",
+        "text": "Test Finally<br>Main Catch"
+      },
+      {
+        "label": "B",
+        "text": "Test Finally"
+      },
+      {
+        "label": "C",
+        "text": "Compilation Error at Line-Y Unhandled exception type ArithmeticException"
+      },
+      {
+        "label": "D",
+        "text": "Compilation Error at Line-X missing exception propagation type ArithmeticException"
+      }
+    ],
+    "answer": "Test Finally<br>Main Catch",
+    "answer_label": "A"
+  },
+  {
+    "id": 6,
+    "question": "Identify the CORRECT statement with respect to Map. (I) LinkedHashMap stores data in the insertion order (II) TreeMap stores data in the ascending order of \"Value\"",
+    "options": [
+      {
+        "label": "A",
+        "text": "only (I)"
+      },
+      {
+        "label": "B",
+        "text": "both (I) and (II)"
+      },
+      {
+        "label": "C",
+        "text": "neither (I) nor (II)"
+      },
+      {
+        "label": "D",
+        "text": "only (II)"
+      }
+    ],
+    "answer": "both (I) and (II)",
+    "answer_label": "B"
+  },
+  {
+    "id": 7,
+    "question": "What will be the output of the code given below? Assume that all required classes and interfaces are imported.<br>public class Test {<br>public static void main(String[] args) {<br>Map<Integer, Integer> myMap = new TreeMap<Integer, Integer>();<br>myMap.put(18, 150);<br>myMap.put(30, 25);<br>myMap.put(20, 50);<br>Set<Integer> keySet = myMap.keySet();<br>for(Integer key: keySet) {<br>System.out.print(myMap.get(key) + \" \");<br>}<br>}<br>}",
+    "options": [
+      {
+        "label": "A",
+        "text": "150 25 50"
+      },
+      {
+        "label": "B",
+        "text": "50 50 25"
+      },
+      {
+        "label": "C",
+        "text": "25 50 150"
+      },
+      {
+        "label": "D",
+        "text": "50 25 150"
+      }
+    ],
+    "answer": "150 25 50",
+    "answer_label": "A"
+  },
+  {
+    "id": 8,
+    "question": "Which of the following is CORRECT way to create Thread? (I) Create a class by extending Thread class and override run() method (II) Create a class by implementing Runnable interface and defining start() method in it",
+    "options": [
+      {
+        "label": "A",
+        "text": "both (I) and (II)"
+      },
+      {
+        "label": "B",
+        "text": "only (I)"
+      },
+      {
+        "label": "C",
+        "text": "only (II)"
+      },
+      {
+        "label": "D",
+        "text": "neither (I) nor (II)"
+      }
+    ],
+    "answer": "only (I)",
+    "answer_label": "B"
+  },
+  {
+    "id": 9,
+    "question": "Which of the following is/are CORRECT statement(s)? (I) A Functional Interface can have only one static method (II) A Functional Interface can have only one default method",
+    "options": [
+      {
+        "label": "A",
+        "text": "neither (I) nor (II)"
+      },
+      {
+        "label": "B",
+        "text": "only (I)"
+      },
+      {
+        "label": "C",
+        "text": "only (II)"
+      },
+      {
+        "label": "D",
+        "text": "both (I) and (II)"
+      }
+    ],
+    "answer": "both (I) and (II)",
+    "answer_label": "D"
+  },
+  {
+    "id": 10,
+    "question": "Refer the incomplete code given below: Which of the following code can be placed at Line-X so that the code displays the output as \"Java\"? **[Choose 2]**<br>interface TestInterface {<br>void display(String message);<br>}<br>public class Demo1 {<br>public static void main(String[] args) {<br>// Line-X<br>obj.display(\"Java\");<br>}<br>}",
+    "options": [
+      {
+        "label": "A",
+        "text": "TestInterface obj = (msg) -> { return msg; };"
+      },
+      {
+        "label": "B",
+        "text": "TestInterface obj = (String msg) -> { return msg; };"
+      },
+      {
+        "label": "C",
+        "text": "TestInterface obj = (msg) -> { System.out.print(msg); };"
+      },
+      {
+        "label": "D",
+        "text": "TestInterface obj = (String msg) -> { System.out.print(msg); };"
+      }
+    ],
+    "answer": "TestInterface obj = (msg) -> { System.out.print(msg); };",
+    "answer_label": "C"
+  },
+  {
+    "id": 11,
+    "question": "Which of the following annotation is used to read the values from CSV FILE for parameterized test?",
+    "options": [
+      {
+        "label": "A",
+        "text": "@CsvSource"
+      },
+      {
+        "label": "B",
+        "text": "@CsvFileSource"
+      },
+      {
+        "label": "C",
+        "text": "@CsvFileValueSource"
+      },
+      {
+        "label": "D",
+        "text": "@CsvValueSource"
+      }
+    ],
+    "answer": "@CsvFileSource",
+    "answer_label": "B"
+  },
+  {
+    "id": 12,
+    "question": "Which of the following interfaces in JDBC can be used to execute SQL statements? **[Choose 2]**",
+    "options": [
+      {
+        "label": "A",
+        "text": "Statement"
+      },
+      {
+        "label": "B",
+        "text": "PreparedStatement"
+      },
+      {
+        "label": "C",
+        "text": "ResultSet"
+      },
+      {
+        "label": "D",
+        "text": "PrepareStatement"
+      }
+    ],
+    "answer": "PreparedStatement",
+    "answer_label": "B"
+  },
+  {
+    "id": 13,
+    "question": "Assume that table Employee(employeeId int(5)) is already created and it has 2 records. The code given below is to print all employee ids from Employee table. Identify the correct code to be placed at Line-X so that all employee ids will be printed.<br>PreparedStatement pstat = conn.prepareStatement(\"SELECT employeeId FROM Employee ORDER By employeeId\");<br>ResultSet rs = pstat.executeQuery();<br>while(rs.next()){<br>System.out.println(// Line-X<br>}",
+    "options": [
+      {
+        "label": "A",
+        "text": "rs.getInt(1)"
+      },
+      {
+        "label": "B",
+        "text": "rs.get(1)"
+      },
+      {
+        "label": "C",
+        "text": "rs.getInt(0)"
+      },
+      {
+        "label": "D",
+        "text": "rs.get(0)"
+      }
+    ],
+    "answer": "rs.getInt(1)",
+    "answer_label": "A"
+  },
+  {
+    "id": 14,
+    "question": "Assume that class CustomerEntity is mapped to table Customer and it has a record. CustomerId is the primary key. What will happen in the customer table, if the below JPA code executes successfully?<br>CustomerEntity entity = new CustomerEntity();<br>entity.setCustomerId(1002);<br>entity.setCustomerName(\"Justin\");<br>entityManager.getTransaction().begin();<br>entityManager.merge(entity); // Line X<br>entityManager.getTransaction().commit();",
+    "options": [
+      {
+        "label": "A",
+        "text": "No Record will be inserted to Customer table"
+      },
+      {
+        "label": "B",
+        "text": "Inserts a new record with customerId \"1002\" and customerName \"Justin\""
+      },
+      {
+        "label": "C",
+        "text": "Runtime Error at Line X: No Record found with id 1002"
+      },
+      {
+        "label": "D",
+        "text": "No record will be updated in Customer table"
+      }
+    ],
+    "answer": "Inserts a new record with customerId \"1002\" and customerName \"Justin\"",
+    "answer_label": "B"
+  },
+  {
+    "id": 15,
+    "question": "Choose from below a valid EntityManager declaration. Note: Assume that required EntityManagerFactory (emf) and related instances are already created.",
+    "options": [
+      {
+        "label": "A",
+        "text": "EntityManager em = Persistence.createEntityManager(\"unit1\");"
+      },
+      {
+        "label": "B",
+        "text": "EntityManager em = emf.entityManager(\"unit1\");"
+      },
+      {
+        "label": "C",
+        "text": "EntityManager em = emf.createEntityManager();"
+      },
+      {
+        "label": "D",
+        "text": "EntityManager em = emf.createEntityManager(\"unit1\");"
+      }
+    ],
+    "answer": "EntityManager em = Persistence.createEntityManager(\"unit1\");",
+    "answer_label": "A"
+  },
+  {
+    "id": 17,
+    "question": "Consider entity classes EmployeeEntity and PassportEntity are mapped to Employee and Passport tables respectively. Identify the appropriate code which implements one to one relationship from Employee to Passport. [Assume that PassportEntity class is created and all required interfaces and classes are imported]",
+    "options": [
+      {
+        "label": "A",
+        "text": "```java<br>@OneToOne(cascade = CascadeType.ALL)<br>@JoinColumn(name = \"passId\", unique = true)<br>private PassportEntity passport;"
+      },
+      {
+        "label": "B",
+        "text": "Option specifying `@JoinTable`"
+      },
+      {
+        "label": "C",
+        "text": "Option specifying `unique` missing `true` syntax"
+      },
+      {
+        "label": "D",
+        "text": "Option specifying name as `\"pass\"`"
+      }
+    ],
+    "answer": "```java<br>@OneToOne(cascade = CascadeType.ALL)<br>@JoinColumn(name = \"passId\", unique = true)<br>private PassportEntity passport;",
+    "answer_label": "A"
+  },
+  {
+    "id": 18,
+    "question": "Which tag is used to define the object/bean in JSP page?",
+    "options": [
+      {
+        "label": "A",
+        "text": "`<jsp:bean>`"
+      },
+      {
+        "label": "B",
+        "text": "`<jsp:createClass>`"
+      },
+      {
+        "label": "C",
+        "text": "`<jsp:classBean>`"
+      },
+      {
+        "label": "D",
+        "text": "`<jsp:useBean>`"
+      }
+    ],
+    "answer": "`<jsp:useBean>`",
+    "answer_label": "D"
+  },
+  {
+    "id": 19,
+    "question": "What would be the output of the JSP code after sending 5 consecutive requests?<br><html><br><%! int data = 10; %><br><% public void jspInit(){ data = 20; } %><br><% data = data + 1; %><br><%= data %><br></html>",
+    "options": [
+      {
+        "label": "A",
+        "text": "25"
+      },
+      {
+        "label": "B",
+        "text": "11"
+      },
+      {
+        "label": "C",
+        "text": "15"
+      },
+      {
+        "label": "D",
+        "text": "21"
+      }
+    ],
+    "answer": "21",
+    "answer_label": "D"
+  },
+  {
+    "id": 20,
+    "question": "Which of the following statement(s) is/are CORRECT with respect to JSP? (I) Default scope of a variable is application (II) JSTL codes are placed inside service() method of translated servlet (III) Page scope variable is available only on the page where it is declared",
+    "options": [
+      {
+        "label": "A",
+        "text": "both (II) and (III)"
+      },
+      {
+        "label": "B",
+        "text": "both (I) and (III)"
+      },
+      {
+        "label": "C",
+        "text": "only (III)"
+      },
+      {
+        "label": "D",
+        "text": "both (I) and (II)"
+      }
+    ],
+    "answer": "only (III)",
+    "answer_label": "C"
+  },
+  {
+    "id": 21,
+    "question": "Which of the following are used to identify a maven artifact? 1. groupId 2. artifactId 3. version",
+    "options": [
+      {
+        "label": "A",
+        "text": "All 1, 2 and 3"
+      },
+      {
+        "label": "B",
+        "text": "both 1 and 2"
+      },
+      {
+        "label": "C",
+        "text": "both 2 and 3"
+      },
+      {
+        "label": "D",
+        "text": "both 1 and 3"
+      }
+    ],
+    "answer": "All 1, 2 and 3",
+    "answer_label": "A"
+  },
+  {
+    "id": 22,
+    "question": "Which of the following is the default packaging supported by maven?",
+    "options": [
+      {
+        "label": "A",
+        "text": "jar"
+      },
+      {
+        "label": "B",
+        "text": "war"
+      },
+      {
+        "label": "C",
+        "text": "pom"
+      },
+      {
+        "label": "D",
+        "text": "ear"
+      }
+    ],
+    "answer": "pom",
+    "answer_label": "C"
+  },
+  {
+    "id": 23,
+    "question": "Which of the below statement(s) is/are TRUE? 1. Static analysis is not useful & cost effective way of testing 2. Static analysis helps to find defects in documents by reviewing them so defects do not transmit to next phase.",
+    "options": [
+      {
+        "label": "A",
+        "text": "both 1 and 2"
+      },
+      {
+        "label": "B",
+        "text": "Only 2"
+      },
+      {
+        "label": "C",
+        "text": "only 1"
+      },
+      {
+        "label": "D",
+        "text": "neither 1 nor 2"
+      }
+    ],
+    "answer": "Only 2",
+    "answer_label": "B"
+  },
+  {
+    "id": 26,
+    "question": "Refer the incomplete code given below. Choose the option to complete the configuration blocks in order:",
+    "options": [
+      {
+        "label": "A",
+        "text": "`spring.datasource.url`, `@SpringBootApplication`, `JpaRepository`, `@RestController`, `@RequestMapping`"
+      }
+    ],
+    "answer": "`spring.datasource.url`, `@SpringBootApplication`, `JpaRepository`, `@RestController`, `@RequestMapping`",
+    "answer_label": "A"
+  },
+  {
+    "id": 27,
+    "question": "Refer the Code Given Below. Assume application has been deployed on port 8000 and request `http://localhost:8000/say/Hello world` is sent to the application using a web browser. Choose from below a valid option to depict the output of above code.",
+    "options": [
+      {
+        "label": "A",
+        "text": "Message From Controller: Hello world"
+      },
+      {
+        "label": "B",
+        "text": "Message From Controller: null..."
+      },
+      {
+        "label": "C",
+        "text": "Error while deployment as Primary configuration is not in root package"
+      }
+    ],
+    "answer": "Error while deployment as Primary configuration is not in root package",
+    "answer_label": "C"
+  },
+  {
+    "id": 30,
+    "question": "Refer the incomplete code given below... Choose from below a valid option to complete the above code, in the order as it appears:",
+    "options": [
+      {
+        "label": "A",
+        "text": "`@RestController`, `@RequestMapping`, `ResponseEntity`"
+      }
+    ],
+    "answer": "`@RestController`, `@RequestMapping`, `ResponseEntity`",
+    "answer_label": "A"
+  },
+  {
+    "id": 32,
+    "question": "Which of the following is CORRECT with respect to Spring? (I) @Configuration is used to declare a XML file as Spring configuration (II) @ComponentScan is used to scan stereotype annotation",
+    "options": [
+      {
+        "label": "A",
+        "text": "only (II)"
+      },
+      {
+        "label": "B",
+        "text": "only (I)"
+      },
+      {
+        "label": "C",
+        "text": "both (I) and (II)"
+      },
+      {
+        "label": "D",
+        "text": "neither (I) nor (II)"
+      }
+    ],
+    "answer": "only (II)",
+    "answer_label": "A"
+  },
+  {
+    "id": 34,
+    "question": "Refer the code given below... Choose from below a valid option/options so that \"cartObject\" can be injected into the Customer bean **[Choose 2]**",
+    "options": [
+      {
+        "label": "A",
+        "text": "Use @Autowired at LineX"
+      },
+      {
+        "label": "B",
+        "text": "@Autowired at LineY"
+      },
+      {
+        "label": "C",
+        "text": "Use @AutoInject at LineX"
+      },
+      {
+        "label": "D",
+        "text": "Use @AutoInject at LineY"
+      }
+    ],
+    "answer": "Use @Autowired at LineX",
+    "answer_label": "A"
+  },
+  {
+    "id": 35,
+    "question": "Choose from below a valid option for Spring JPA Data method to Fetch the Employee details who gets salary within given range in the descending order of salary.",
+    "options": [
+      {
+        "label": "A",
+        "text": "`List<EmployeeEntity> findBySalaryBetweenOrderBySalaryDesc(Double param1, Double param2)`"
+      }
+    ],
+    "answer": "`List<EmployeeEntity> findBySalaryBetweenOrderBySalaryDesc(Double param1, Double param2)`",
+    "answer_label": "A"
+  },
+  {
+    "id": 36,
+    "question": "Which of the following is/are CORRECT with respect to Spring transaction methods? (I) If a method throws runtime/unchecked exception, then rollback will be triggered implicitly (II) If a method throws checked exception, then rollback will be triggered implicitly",
+    "options": [
+      {
+        "label": "A",
+        "text": "both (I) and (II)"
+      },
+      {
+        "label": "B",
+        "text": "only (I)"
+      },
+      {
+        "label": "C",
+        "text": "only (II)"
+      },
+      {
+        "label": "D",
+        "text": "neither (I) nor (II)"
+      }
+    ],
+    "answer": "only (I)",
+    "answer_label": "B"
+  },
+  {
+    "id": 37,
+    "question": "Refer below incomplete code... Assume InvalidDummyException is checked exception. Choose from below the valid option to be placed at Line-X and Line-Y so that Rollback of Physical transaction can rollback all the logical transactions.",
+    "options": [
+      {
+        "label": "A",
+        "text": "`@Transactional(value=\"txManager\", rollbackFor=InvalidDummyException.class)`"
+      }
+    ],
+    "answer": "`@Transactional(value=\"txManager\", rollbackFor=InvalidDummyException.class)`",
+    "answer_label": "A"
+  },
+  {
+    "id": 38,
+    "question": "Choose the CORRECT Output for the code given below:<br>List<Integer> list = new ArrayList<Integer>();<br>list.add(1);<br>list.add(3);<br>list.add(4);<br>list.add(3);<br>System.out.println(\"1->\" + list.stream().dropWhile(element -> element < 3).collect(Collectors.toList()));<br>System.out.println(\"2->\" + list.stream().filter(element -> element > 3).collect(Collectors.toList()));",
+    "options": [
+      {
+        "label": "A",
+        "text": "$1 \\rightarrow [3, 4, 3]$<br>$2 \\rightarrow [4]$"
+      },
+      {
+        "label": "B",
+        "text": "$1 \\rightarrow [3, 4]$<br>$2 \\rightarrow [4]$"
+      },
+      {
+        "label": "C",
+        "text": "$1 \\rightarrow [3, 4, 3]$<br>$2 \\rightarrow [4, 3]$"
+      },
+      {
+        "label": "D",
+        "text": "$1 \\rightarrow [3, 4]$<br>$2 \\rightarrow [4, 3]$"
+      }
+    ],
+    "answer": "$1 \\rightarrow [3, 4, 3]$<br>$2 \\rightarrow [4, 3]$",
+    "answer_label": "C"
+  },
+  {
+    "id": 40,
+    "question": "Which of the following is/are CORRECT statement(s) with respect to Spring Test? (I) @ContextConfiguration can point to Spring XML configuration and JAVA configuration (II) @ActiveProfiles is used to activate one or more profiles for the test cases",
+    "options": [
+      {
+        "label": "A",
+        "text": "both (I) and (II)"
+      },
+      {
+        "label": "B",
+        "text": "only (I)"
+      },
+      {
+        "label": "C",
+        "text": "neither (I) nor (II)"
+      },
+      {
+        "label": "D",
+        "text": "only (II)"
+      }
+    ],
+    "answer": "both (I) and (II)",
+    "answer_label": "A"
+  },
+  {
+    "id": 41,
+    "question": "Choose a valid option from below that helps to auto configure the database connection and related dependencies in SpringBoot.",
+    "options": [
+      {
+        "label": "A",
+        "text": "@Configuration"
+      },
+      {
+        "label": "B",
+        "text": "@AutoConfiguration"
+      },
+      {
+        "label": "C",
+        "text": "@EnableAutoConfiguration"
+      },
+      {
+        "label": "D",
+        "text": "@SpringBoot"
+      }
+    ],
+    "answer": "@EnableAutoConfiguration",
+    "answer_label": "C"
+  },
+  {
+    "id": 42,
+    "question": "Which of the following statement(s) is/are CORRECT with respect to Spring MVC? (I) Root context belongs to DispatcherServlet (II) Common configuration is configured in root context and presentation layer configuration is configured in child context",
+    "options": [
+      {
+        "label": "A",
+        "text": "both (I) and (II)"
+      },
+      {
+        "label": "B",
+        "text": "only (I)"
+      },
+      {
+        "label": "C",
+        "text": "only (II)"
+      },
+      {
+        "label": "D",
+        "text": "neither (I) nor (II)"
+      }
+    ],
+    "answer": "only (II)",
+    "answer_label": "C"
+  },
+  {
+    "id": 45,
+    "question": "Which of the following interface of collection framework allows to implement more than one sorting algorithm to sort the set of objects of user defined class?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Comparable"
+      },
+      {
+        "label": "B",
+        "text": "Comparator"
+      },
+      {
+        "label": "C",
+        "text": "Cloneable"
+      },
+      {
+        "label": "D",
+        "text": "Collections"
+      }
+    ],
+    "answer": "Comparator",
+    "answer_label": "B"
+  },
+  {
+    "id": 46,
+    "question": "Which one of the following tool helps to achieve Continuous Delivery?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ant"
+      },
+      {
+        "label": "B",
+        "text": "Jenkins"
+      },
+      {
+        "label": "C",
+        "text": "Maven"
+      }
+    ],
+    "answer": "Jenkins",
+    "answer_label": "B"
+  },
+  {
+    "id": 47,
+    "question": "Which of the following filter search criteria are available under rules in SonarQube?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Language"
+      },
+      {
+        "label": "B",
+        "text": "Type"
+      },
+      {
+        "label": "C",
+        "text": "Tag"
+      }
+    ],
+    "answer": "Language",
+    "answer_label": "A"
+  },
+  {
+    "id": 48,
+    "question": "Which of the following is CORRECT with respect to propagation type: Propagation REQUIRES_NEW? (I) For a method, begin a new transaction always (II) If a method is invoked from another method and a transaction exists, then the same transaction is used",
+    "options": [
+      {
+        "label": "A",
+        "text": "both (I) and (II)"
+      },
+      {
+        "label": "B",
+        "text": "only (I)"
+      },
+      {
+        "label": "C",
+        "text": "only (II)"
+      },
+      {
+        "label": "D",
+        "text": "neither (I) nor (II)"
+      }
+    ],
+    "answer": "only (I)",
+    "answer_label": "B"
+  }
+]

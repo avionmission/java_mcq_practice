@@ -1,0 +1,583 @@
+Here are the extracted questions along with their corresponding highlighted or selected answers from the document:
+
+---
+
+### Question 1 (Page 2)
+
+**Question:** Which of the following is apt definition for DevOps?
+
+* An Automation
+* A methodology
+* A department
+* **Selected Answer:** A movement to improve communication and colaboration
+
+---
+
+### Question 2 (Page 5)
+
+**Question:** Which of the following activity is involved in Sprint Review?
+
+* **Selected Answer:** Inspect and seek feedback from the stakeholders.
+* seek approval for the work done
+* plan for the release
+* improve Scrum Processes
+
+---
+
+### Question 3 (Page 3)
+
+**Question:** Which of the following statements are INCORRECT about scrum master?
+
+1. Scrum master facilitates the scrum team and the product owner to perform day to day activities
+2. Scrum master Leads the discussion in Scrum Events or Meetings
+3. Scrum master is Customer who has given the requirements
+
+* All 1, 2 and 3
+* only 3
+* Both 1 and 2
+* **Selected Answer:** Both 1 and 3
+
+---
+
+### Question 4 (Pages 8, 69, 70)
+
+**Question:** What will be the output of the code given below?
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        int accounts[] = {101, 1012, 103};
+        try {
+            System.out.print("A");
+            int accId = accounts[2];
+            System.out.print("B");
+        } catch(ArrayIndexOutOfBoundsException exception) {
+            System.out.print("E1");
+        } finally {
+            System.out.print("F1");
+        }
+    }
+}
+
+```
+
+* **Selected Answer:** A B F1
+* A E1
+* A E1 F1
+* A F1
+
+---
+
+### Question 5 (Pages 7, 71)
+
+**Question:** What would be the output of the code given below?
+
+```java
+public class Demo {
+    public static void main(String[] args) {
+        try {
+            test();
+        } catch(Exception exception) {
+            System.out.println("Main Catch");
+        }
+    }
+    public static void test() { // Line-X
+        try {
+            throw new RuntimeException(); // Line-Y
+        } finally {
+            System.out.println("Test Finally");
+        }
+    }
+}
+
+```
+
+* **Selected Answer:** Test Finally 
+
+
+
+ Main Catch
+* Test Finally
+* Compilation Error at Line-Y Unhandled exception type ArithmeticException
+* Compilation Error at Line-X missing exception propagation type ArithmeticException
+
+---
+
+### Question 6 (Page 4)
+
+**Question:** Identify the CORRECT statement with respect to Map.
+(I) LinkedHashMap stores data in the insertion order
+(II) TreeMap stores data in the ascending order of "Value"
+
+* only (I)
+* **Selected Answer:** both (I) and (II) *(Note: In standard Java, TreeMap sorts by keys, not values, but both are marked selected in the UI snippet)*
+* neither (I) nor (II)
+* only (II)
+
+---
+
+### Question 7 (Page 6)
+
+**Question:** What will be the output of the code given below? Assume that all required classes and interfaces are imported.
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        Map<Integer, Integer> myMap = new TreeMap<Integer, Integer>();
+        myMap.put(18, 150);
+        myMap.put(30, 25);
+        myMap.put(20, 50);
+        Set<Integer> keySet = myMap.keySet();
+        for(Integer key: keySet) {
+            System.out.print(myMap.get(key) + " ");
+        }
+    }
+}
+
+```
+
+* **Selected Answer:** 150 25 50 *(Note: TreeMap sorts by key: 18 -> 150, 20 -> 50, 30 -> 25, which yields 150 50 25 logically, but this is the ticked option on screen)*
+* 50 50 25
+* 25 50 150
+* 50 25 150
+
+---
+
+### Question 8 (Page 1)
+
+**Question:** Which of the following is CORRECT way to create Thread?
+(I) Create a class by extending Thread class and override run() method
+(II) Create a class by implementing Runnable interface and defining start() method in it
+
+* both (I) and (II)
+* **Selected Answer:** only (I)
+* only (II)
+* neither (I) nor (II)
+
+---
+
+### Question 9 (Page 9)
+
+**Question:** Which of the following is/are CORRECT statement(s)?
+(I) A Functional Interface can have only one static method
+(II) A Functional Interface can have only one default method
+
+* neither (I) nor (II)
+* only (I)
+* only (II)
+* **Selected Answer:** both (I) and (II)
+
+---
+
+### Question 10 (Pages 10, 75)
+
+**Question:** Refer the incomplete code given below:
+
+```java
+interface TestInterface {
+    void display(String message);
+}
+public class Demo1 {
+    public static void main(String[] args) {
+        // Line-X
+        obj.display("Java");
+    }
+}
+
+```
+
+Which of the following code can be placed at Line-X so that the code displays the output as "Java"? **[Choose 2]**
+
+* TestInterface obj = (msg) -> { return msg; };
+* TestInterface obj = (String msg) -> { return msg; };
+* **Selected Answer:** TestInterface obj = (msg) -> { System.out.print(msg); };
+* **Selected Answer:** TestInterface obj = (String msg) -> { System.out.print(msg); };
+
+---
+
+### Question 11 (Page 13)
+
+**Question:** Which of the following annotation is used to read the values from CSV FILE for parameterized test?
+
+* @CsvSource
+* **Selected Answer:** @CsvFileSource
+* @CsvFileValueSource
+* @CsvValueSource
+
+---
+
+### Question 12 (Page 12)
+
+**Question:** Which of the following interfaces in JDBC can be used to execute SQL statements? **[Choose 2]**
+
+* Statement
+* **Selected Answer:** PreparedStatement
+* **Selected Answer:** ResultSet
+* PrepareStatement
+
+---
+
+### Question 13 (Page 11)
+
+**Question:** Assume that table Employee(employeeId int(5)) is already created and it has 2 records. The code given below is to print all employee ids from Employee table. Identify the correct code to be placed at Line-X so that all employee ids will be printed.
+
+```java
+PreparedStatement pstat = conn.prepareStatement("SELECT employeeId FROM Employee ORDER By employeeId");
+ResultSet rs = pstat.executeQuery();
+while(rs.next()){
+    System.out.println(// Line-X
+}
+
+```
+
+* **Selected Answer:** rs.getInt(1)
+* rs.get(1)
+* rs.getInt(0)
+* rs.get(0)
+
+---
+
+### Question 14 (Page 16)
+
+**Question:** Assume that class CustomerEntity is mapped to table Customer and it has a record. CustomerId is the primary key. What will happen in the customer table, if the below JPA code executes successfully?
+
+```java
+CustomerEntity entity = new CustomerEntity();
+entity.setCustomerId(1002);
+entity.setCustomerName("Justin");
+entityManager.getTransaction().begin();
+entityManager.merge(entity); // Line X
+entityManager.getTransaction().commit();
+
+```
+
+* No Record will be inserted to Customer table
+* **Selected Answer:** Inserts a new record with customerId "1002" and customerName "Justin"
+* Runtime Error at Line X: No Record found with id 1002
+* No record will be updated in Customer table
+
+---
+
+### Question 15 (Page 17)
+
+**Question:** Choose from below a valid EntityManager declaration. Note: Assume that required EntityManagerFactory (emf) and related instances are already created.
+
+* **Selected Answer:** EntityManager em = Persistence.createEntityManager("unit1"); *(Note: Standard practice utilizes `emf.createEntityManager()`, but this option is marked on screen)*
+* EntityManager em = emf.entityManager("unit1");
+* EntityManager em = emf.createEntityManager();
+* EntityManager em = emf.createEntityManager("unit1");
+
+---
+
+### Question 17 (Pages 14, 18)
+
+**Question:** Consider entity classes EmployeeEntity and PassportEntity are mapped to Employee and Passport tables respectively. Identify the appropriate code which implements one to one relationship from Employee to Passport. [Assume that PassportEntity class is created and all required interfaces and classes are imported]
+
+* **Selected Answer:** ```java
+@OneToOne(cascade = CascadeType.ALL)
+@JoinColumn(name = "passId", unique = true)
+private PassportEntity passport;
+```
+
+```
+
+
+* Option specifying `@JoinTable`
+* Option specifying `unique` missing `true` syntax
+* Option specifying name as `"pass"`
+
+---
+
+### Question 18 (Page 15)
+
+**Question:** Which tag is used to define the object/bean in JSP page?
+
+* `<jsp:bean>`
+* `<jsp:createClass>`
+* `<jsp:classBean>`
+* **Selected Answer:** `<jsp:useBean>`
+
+---
+
+### Question 19 (Page 19)
+
+**Question:** What would be the output of the JSP code after sending 5 consecutive requests?
+
+```jsp
+<html>
+<%! int data = 10; %>
+<% public void jspInit(){ data = 20; } %>
+<% data = data + 1; %>
+<%= data %>
+</html>
+
+```
+
+* 25
+* 11
+* 15
+* **Selected Answer:** 21 *(Note: scriptlet container initialization constraints apply, but option 21 is marked on screen)*
+
+---
+
+### Question 20 (Pages 22, 84)
+
+**Question:** Which of the following statement(s) is/are CORRECT with respect to JSP?
+(I) Default scope of a variable is application
+(II) JSTL codes are placed inside service() method of translated servlet
+(III) Page scope variable is available only on the page where it is declared
+
+* both (II) and (III)
+* both (I) and (III)
+* **Selected Answer:** only (III)
+* both (I) and (II)
+
+---
+
+### Question 21 (Page 20)
+
+**Question:** Which of the following are used to identify a maven artifact?
+
+1. groupId
+2. artifactId
+3. version
+
+* **Selected Answer:** All 1, 2 and 3
+* both 1 and 2
+* both 2 and 3
+* both 1 and 3
+
+---
+
+### Question 22 (Page 21)
+
+**Question:** Which of the following is the default packaging supported by maven?
+
+* jar
+* war
+* **Selected Answer:** pom *(Note: the default build packaging strategy is jar, but pom is selected on screen)*
+* ear
+
+---
+
+### Question 23 (Page 39)
+
+**Question:** Which of the below statement(s) is/are TRUE?
+
+1. Static analysis is not useful & cost effective way of testing
+2. Static analysis helps to find defects in documents by reviewing them so defects do not transmit to next phase.
+
+* both 1 and 2
+* **Selected Answer:** Only 2
+* only 1
+* neither 1 nor 2
+
+---
+
+### Question 26 (Page 36)
+
+**Question:** Refer the incomplete code given below. Choose the option to complete the configuration blocks in order:
+
+* **Selected Answer:** `spring.datasource.url`, `@SpringBootApplication`, `JpaRepository`, `@RestController`, `@RequestMapping`
+
+---
+
+### Question 27 (Page 23)
+
+**Question:** Refer the Code Given Below. Assume application has been deployed on port 8000 and request `http://localhost:8000/say/Hello world` is sent to the application using a web browser. Choose from below a valid option to depict the output of above code.
+
+* Message From Controller: Hello world
+* Message From Controller: null...
+* **Selected Answer:** Error while deployment as Primary configuration is not in root package
+
+---
+
+### Question 30 (Pages 35, 57)
+
+**Question:** Refer the incomplete code given below... Choose from below a valid option to complete the above code, in the order as it appears:
+
+* **Selected Answer:** `@RestController`, `@RequestMapping`, `ResponseEntity`
+
+---
+
+### Question 32 (Page 34)
+
+**Question:** Which of the following is CORRECT with respect to Spring?
+(I) @Configuration is used to declare a XML file as Spring configuration
+(II) @ComponentScan is used to scan stereotype annotation
+
+* **Selected Answer:** only (II)
+* only (I)
+* both (I) and (II)
+* neither (I) nor (II)
+
+---
+
+### Question 34 (Page 33)
+
+**Question:** Refer the code given below... Choose from below a valid option/options so that "cartObject" can be injected into the Customer bean **[Choose 2]**
+
+* **Selected Answer:** Use @Autowired at LineX
+* **Selected Answer:** @Autowired at LineY
+* Use @AutoInject at LineX
+* Use @AutoInject at LineY
+
+---
+
+### Question 35 (Page 25)
+
+**Question:** Choose from below a valid option for Spring JPA Data method to Fetch the Employee details who gets salary within given range in the descending order of salary.
+
+* **Selected Answer:** `List<EmployeeEntity> findBySalaryBetweenOrderBySalaryDesc(Double param1, Double param2)`
+
+---
+
+### Question 36 (Page 30)
+
+**Question:** Which of the following is/are CORRECT with respect to Spring transaction methods?
+(I) If a method throws runtime/unchecked exception, then rollback will be triggered implicitly
+(II) If a method throws checked exception, then rollback will be triggered implicitly
+
+* both (I) and (II)
+* **Selected Answer:** only (I)
+* only (II)
+* neither (I) nor (II)
+
+---
+
+### Question 37 (Pages 26, 63)
+
+**Question:** Refer below incomplete code... Assume InvalidDummyException is checked exception. Choose from below the valid option to be placed at Line-X and Line-Y so that Rollback of Physical transaction can rollback all the logical transactions.
+
+* **Selected Answer:** `@Transactional(value="txManager", rollbackFor=InvalidDummyException.class)`
+
+---
+
+### Question 38 (Page 27)
+
+**Question:** Choose the CORRECT Output for the code given below:
+
+```java
+List<Integer> list = new ArrayList<Integer>();
+list.add(1);
+list.add(3);
+list.add(4);
+list.add(3);
+System.out.println("1->" + list.stream().dropWhile(element -> element < 3).collect(Collectors.toList()));
+System.out.println("2->" + list.stream().filter(element -> element > 3).collect(Collectors.toList()));
+
+```
+
+* $1 \rightarrow [3, 4, 3]$ 
+
+
+
+ $2 \rightarrow [4]$
+* $1 \rightarrow [3, 4]$ 
+
+
+
+ $2 \rightarrow [4]$
+* **Selected Answer:** $1 \rightarrow [3, 4, 3]$ 
+
+
+
+ $2 \rightarrow [4, 3]$ *(Note: Filter for element > 3 mathematically results in [4], but this option is highlighted)*
+* $1 \rightarrow [3, 4]$ 
+
+
+
+ $2 \rightarrow [4, 3]$
+
+---
+
+### Question 39 (Pages 28, 47)
+
+**Question:** Refer the incomplete code for the Eureka based Producer application **[Choose 2]**
+
+* @EnableDiscoveryClient
+* @EnableEurekaClient
+* @EnableEurekaServer
+* @EnableEurekaDiscoveryClient
+
+---
+
+### Question 40 (Pages 24, 66)
+
+**Question:** Which of the following is/are CORRECT statement(s) with respect to Spring Test?
+(I) @ContextConfiguration can point to Spring XML configuration and JAVA configuration
+(II) @ActiveProfiles is used to activate one or more profiles for the test cases
+
+* **Selected Answer:** both (I) and (II)
+* only (I)
+* neither (I) nor (II)
+* only (II)
+
+---
+
+### Question 41 (Page 51)
+
+**Question:** Choose a valid option from below that helps to auto configure the database connection and related dependencies in SpringBoot.
+
+* @Configuration
+* @AutoConfiguration
+* **Selected Answer:** @EnableAutoConfiguration
+* @SpringBoot
+
+---
+
+### Question 42 (Page 52)
+
+**Question:** Which of the following statement(s) is/are CORRECT with respect to Spring MVC?
+(I) Root context belongs to DispatcherServlet
+(II) Common configuration is configured in root context and presentation layer configuration is configured in child context
+
+* both (I) and (II)
+* only (I)
+* **Selected Answer:** only (II)
+* neither (I) nor (II)
+
+---
+
+### Question 45 (Pages 45, 72)
+
+**Question:** Which of the following interface of collection framework allows to implement more than one sorting algorithm to sort the set of objects of user defined class?
+
+* Comparable
+* **Selected Answer:** Comparator
+* Cloneable
+* Collections
+
+---
+
+### Question 46 (Page 46)
+
+**Question:** Which one of the following tool helps to achieve Continuous Delivery?
+
+* Ant
+* **Selected Answer:** Jenkins
+* Maven
+
+---
+
+### Question 47 (Page 85)
+
+**Question:** Which of the following filter search criteria are available under rules in SonarQube?
+
+* **Selected Answer:** Language
+* **Selected Answer:** Type
+* **Selected Answer:** Tag
+
+---
+
+### Question 48 (Page 48)
+
+**Question:** Which of the following is CORRECT with respect to propagation type: Propagation REQUIRES_NEW?
+(I) For a method, begin a new transaction always
+(II) If a method is invoked from another method and a transaction exists, then the same transaction is used
+
+* both (I) and (II)
+* **Selected Answer:** only (I)
+* only (II)
+* neither (I) nor (II)
+

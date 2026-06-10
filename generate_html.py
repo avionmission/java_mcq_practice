@@ -6,8 +6,12 @@ with open('questions.json') as f:
 with open('quiz2-questions.json') as f:
     questions2 = json.load(f)
 
+with open('quiz3-questions.json') as f:
+    questions3 = json.load(f)
+
 Q1 = len(questions1)
 Q2 = len(questions2)
+Q3 = len(questions3)
 
 html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -127,6 +131,7 @@ html = f'''<!DOCTYPE html>
   <div class="tabs">
     <button class="tab active" data-tab="1">Quiz 1: Java MCQs</button>
     <button class="tab" data-tab="2">Quiz 2: FSE Main Test</button>
+    <button class="tab" data-tab="3">Quiz 3: DevOps &amp; More</button>
   </div>
   <div class="header">
     <div>
@@ -162,17 +167,19 @@ html = f'''<!DOCTYPE html>
 <script>
 var QUIZZES = {{
   1: {json.dumps(questions1, ensure_ascii=False)},
-  2: {json.dumps(questions2, ensure_ascii=False)}
+  2: {json.dumps(questions2, ensure_ascii=False)},
+  3: {json.dumps(questions3, ensure_ascii=False)}
 }};
 
-var TOTALS = {{ 1: {Q1}, 2: {Q2} }};
-var TITLES = {{ 1: 'Quiz 1: Java MCQ', 2: 'Quiz 2: FSE Main Test' }};
-var SUBTITLES = {{ 1: '{Q1} questions - Java/JPA/JDBC/Spring', 2: '{Q2} questions - JSP/Scrum/Spring/Eureka' }};
+var TOTALS = {{ 1: {Q1}, 2: {Q2}, 3: {Q3} }};
+var TITLES = {{ 1: 'Quiz 1: Java MCQ', 2: 'Quiz 2: FSE Main Test', 3: 'Quiz 3: DevOps & More' }};
+var SUBTITLES = {{ 1: '{Q1} questions - Java/JPA/JDBC/Spring', 2: '{Q2} questions - JSP/Scrum/Spring/Eureka', 3: '{Q3} questions - Java/Spring/DevOps' }};
 
 var activeTab = 1;
 var state = {{
   1: {{ currentIdx: 0, answered: [], quizDone: false }},
-  2: {{ currentIdx: 0, answered: [], quizDone: false }}
+  2: {{ currentIdx: 0, answered: [], quizDone: false }},
+  3: {{ currentIdx: 0, answered: [], quizDone: false }}
 }};
 
 var QUESTIONS = QUIZZES[1];
@@ -196,6 +203,7 @@ var quizSubtitle = document.getElementById('quizSubtitle');
 var quizContent = document.getElementById('quizContent');
 var results = document.getElementById('results');
 var finalScore = document.getElementById('finalScore');
+var finalTotal = document.querySelector('.results .score-big .total');
 var finalPct = document.getElementById('finalPct');
 var summary = document.getElementById('summary');
 var restartBtn = document.getElementById('restartBtn');
@@ -345,6 +353,7 @@ function showResults() {{
   var s = calcScore();
   var total = TOTALS[activeTab];
   finalScore.textContent = s;
+  finalTotal.textContent = ' / ' + total;
   var pct = Math.round(s / total * 100);
   finalPct.textContent = pct + '%';
   var html = '<h3 style="margin-bottom:12px">Review Answers</h3>';
