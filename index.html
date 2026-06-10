@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java MCQ Quiz</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f0f2f5; min-height: 100vh; display: flex; justify-content: center;
+    padding: 20px; color: #1a1a2e;
+  }
+  .container { width: 100%; max-width: 720px; }
+  .header {
+    background: #1a1a2e; color: white; padding: 20px 24px; border-radius: 12px 12px 0 0;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+  }
+  .header h1 { font-size: 20px; font-weight: 600; }
+  .score { font-size: 16px; background: #16213e; padding: 6px 14px; border-radius: 20px; }
+  .progress-wrap { background: #e9ecef; height: 6px; }
+  .progress-bar { height: 100%; background: #0f3460; transition: width 0.3s ease; width: 0%; }
+  .card {
+    background: white; border-radius: 0 0 12px 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 28px 24px 24px;
+  }
+  .q-num { font-size: 13px; color: #6c757d; margin-bottom: 10px; font-weight: 500; }
+  .q-text {
+    font-size: 17px; line-height: 1.6; margin-bottom: 24px; font-weight: 500;
+  }
+  .q-text code, .answer-text code { background: #f0f2f5; padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border: 2px solid #dee2e6; border-radius: 10px; background: white;
+    font-size: 15px; cursor: pointer; transition: all 0.15s ease; text-align: left;
+    line-height: 1.5; width: 100%;
+  }
+  .option-btn:hover:not(.disabled) { border-color: #0f3460; background: #f8f9ff; }
+  .option-btn .label {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    background: #e9ecef; display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px; transition: all 0.15s ease;
+  }
+  .option-btn.selected { border-color: #0f3460; background: #eef1ff; }
+  .option-btn.correct { border-color: #28a745; background: #d4edda; }
+  .option-btn.correct .label { background: #28a745; color: white; }
+  .option-btn.wrong { border-color: #dc3545; background: #f8d7da; }
+  .option-btn.wrong .label { background: #dc3545; color: white; }
+  .option-btn.disabled { cursor: default; opacity: 0.85; }
+  .option-btn.show-correct { border-color: #28a745; background: #d4edda; }
+  .option-btn.show-correct .label { background: #28a745; color: white; }
+  .feedback {
+    margin-top: 20px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+  .feedback.wrong { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+  .feedback .answer-text { margin-top: 5px; }
+  .feedback .answer-text code { background: rgba(0,0,0,0.06); }
+  .next-btn {
+    margin-top: 20px; padding: 12px 32px; border: none; border-radius: 8px;
+    background: #0f3460; color: white; font-size: 16px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s ease; display: none;
+  }
+  .next-btn:hover { background: #1a1a2e; }
+  .next-btn.show { display: inline-block; }
+  .results {
+    display: none; text-align: center; padding: 20px 0;
+  }
+  .results.show { display: block; }
+  .results h2 { font-size: 28px; margin-bottom: 8px; }
+  .results .score-big { font-size: 56px; font-weight: 700; color: #0f3460; margin: 16px 0; }
+  .results .score-big .total { font-size: 28px; color: #6c757d; }
+  .results .pct { font-size: 18px; color: #6c757d; margin-bottom: 24px; }
+  .results .summary { text-align: left; margin-top: 16px; }
+  .results .summary-item {
+    padding: 10px 14px; border-bottom: 1px solid #eee; font-size: 14px;
+  }
+  .results .summary-item:last-child { border-bottom: none; }
+  .results .summary-item .sq-num { font-weight: 600; color: #0f3460; }
+  .results .summary-item .sq-status { display: inline-block; margin-right: 6px; }
+  .restart-btn {
+    margin-top: 20px; padding: 12px 32px; border: 2px solid #0f3460;
+    border-radius: 8px; background: white; color: #0f3460;
+    font-size: 16px; font-weight: 500; cursor: pointer;
+  }
+  .restart-btn:hover { background: #f0f2f5; }
+  .quiz-content { display: block; }
+  .quiz-content.hidden { display: none; }
+  @media (max-width: 500px) {
+    body { padding: 10px; }
+    .header { padding: 14px 16px; }
+    .header h1 { font-size: 17px; }
+    .card { padding: 20px 16px; }
+    .q-text { font-size: 15px; }
+    .option-btn { padding: 12px 14px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Java MCQ Quiz</h1>
+    <div class="score">Score: <span id="score">0</span> / <span id="total">71</span></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="card">
+    <div id="quizContent" class="quiz-content">
+      <div class="q-num" id="qNum">Question 1 of 71</div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback">
+        <div id="feedbackMsg"></div>
+        <div class="answer-text" id="feedbackAnswer"></div>
+      </div>
+      <button class="next-btn" id="nextBtn">Next</button>
+    </div>
+    <div class="results" id="results">
+      <h2>Quiz Complete!</h2>
+      <div class="score-big"><span id="finalScore">0</span><span class="total"> / 71</span></div>
+      <div class="pct" id="finalPct">0%</div>
+      <div class="summary" id="summary"></div>
+      <button class="restart-btn" id="restartBtn">Restart Quiz</button>
+    </div>
+  </div>
+</div>
+<script>
+const QUESTIONS = [{"id": 1, "question": "Choose the disadvantage of the thin driver from the below options:", "options": [{"label": "A", "text": "Poor performance than all other drivers"}, {"label": "B", "text": "Software installation is required in server or client side"}, {"label": "C", "text": "It is dependent on the database"}, {"label": "D", "text": "It is partially written in Java"}], "answer": "It is dependent on the database", "answer_label": "C"}, {"id": 2, "question": "Suresh, a marketing executive, wants to create a customer report on a monthly basis. He wants to iterate the records from the customer table faster. Help him to select the appropriate interface for this situation.", "options": [{"label": "A", "text": "Statement"}, {"label": "B", "text": "PreparedStatement"}, {"label": "C", "text": "CallableStatement"}, {"label": "D", "text": "ResultSet"}], "answer": "PreparedStatement", "answer_label": "B"}, {"id": 3, "question": "Choose from the following CORRECT statements about the `Class.forName()` method call: I. This method is used for dynamically loading the driver's class file into memory. II. It is mandatory from JDBC 4.0 onwards. III. It returns an instance of `java.lang.Class`.", "options": [{"label": "A", "text": "I and III only"}, {"label": "B", "text": "I and II only"}, {"label": "C", "text": "II and III only"}, {"label": "D", "text": "All of the above"}], "answer": "I and III only", "answer_label": "A"}, {"id": 4, "question": "Which of the following lines of code is used to register a MySQL driver using the `DriverManager` class?", "options": [{"label": "A", "text": "`DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());`"}, {"label": "B", "text": "`DriverManager.getDriver(\"jdbc:mysql://localhost:3306/db\");`"}, {"label": "C", "text": "`Class.forName(\"com.mysql.cj.jdbc.Driver\");`"}, {"label": "D", "text": "Both A and C"}], "answer": "Both A and C", "answer_label": "D"}, {"id": 5, "question": "Which method is used to execute a SQL `DELETE` statement that removes records from a database table?", "options": [{"label": "A", "text": "`executeQuery()`"}, {"label": "B", "text": "`executeUpdate()`"}, {"label": "C", "text": "`executeDelete()`"}, {"label": "D", "text": "`executeModifier()`"}], "answer": "`executeUpdate()", "answer_label": "B"}, {"id": 6, "question": "Which entity state represents an object that has a persistent identity but is no longer associated with an active persistence context?", "options": [{"label": "A", "text": "New / Transient"}, {"label": "B", "text": "Managed"}, {"label": "C", "text": "Detached"}, {"label": "D", "text": "Removed"}], "answer": "Detached", "answer_label": "C"}, {"id": 7, "question": "Identify the JPA specification provider from the given options:", "options": [{"label": "A", "text": "Hibernate"}, {"label": "B", "text": "EclipseLink"}, {"label": "C", "text": "OpenJPA"}, {"label": "D", "text": "All of the above"}], "answer": "All of the above", "answer_label": "D"}, {"id": 8, "question": "What is the function of the `EntityManagerFactory` in JPA?", "options": [{"label": "A", "text": "To manage individual entity lifecycles"}, {"label": "B", "text": "To interact with the database context directly"}, {"label": "C", "text": "To create and configure instances of `EntityManager`"}, {"label": "D", "text": "To execute JPQL queries directly"}], "answer": "To create and configure instances of `EntityManager", "answer_label": "C"}, {"id": 9, "question": "Which method is used to transfer a detached entity back into a managed state within a new transaction context?", "options": [{"label": "A", "text": "`persist()`"}, {"label": "B", "text": "`merge()`"}, {"label": "C", "text": "`refresh()`"}, {"label": "D", "text": "`flush()`"}], "answer": "`merge()", "answer_label": "B"}, {"id": 10, "question": "Which annotation is used to specify that multiple named queries can be defined on a single entity class?", "options": [{"label": "A", "text": "`@NamedQuery`"}, {"label": "B", "text": "`@NamedQueries`"}, {"label": "C", "text": "`@QueryRepository`"}, {"label": "D", "text": "`@Queries`"}], "answer": "`@NamedQueries", "answer_label": "B"}, {"id": 11, "question": "In JPQL, which clause is used to filter out records based on aggregate conditions?", "options": [{"label": "A", "text": "`WHERE`"}, {"label": "B", "text": "`HAVING`"}, {"label": "C", "text": "`GROUP BY`"}, {"label": "D", "text": "`ORDER BY`"}], "answer": "`HAVING", "answer_label": "B"}, {"id": 12, "question": "When an entity is in the \"Removed\" state, when is it actually deleted from the underlying database table?", "options": [{"label": "A", "text": "Immediately when `remove()` is called"}, {"label": "B", "text": "When the transaction commits or `flush()` is invoked"}, {"label": "C", "text": "When the entity becomes detached"}, {"label": "D", "text": "When the JVM garbage collector runs"}], "answer": "When the transaction commits or `flush()` is invoked", "answer_label": "B"}, {"id": 13, "question": "What is the fundamental purpose of Unit Testing in a software application?", "options": [{"label": "A", "text": "To test the integration between multiple third-party systems"}, {"label": "B", "text": "To isolate and verify the correctness of the smallest testable units of code"}, {"label": "C", "text": "To perform load testing and performance benchmarks"}, {"label": "D", "text": "To evaluate user interface designs"}], "answer": "To isolate and verify the correctness of the smallest testable units of code", "answer_label": "B"}, {"id": 14, "question": "In JUnit 5, what happens if an Assumption fails during execution (e.g., using `assumeTrue()`)?", "options": [{"label": "A", "text": "The test fails and throws an AssertionError"}, {"label": "B", "text": "The test is aborted and skipped without failing the build"}, {"label": "C", "text": "The entire test suite terminates unexpectedly"}, {"label": "D", "text": "The test continues to execute standard assertions"}], "answer": "The test is aborted and skipped without failing the build", "answer_label": "B"}, {"id": 15, "question": "Which assertion in JUnit 5 verifies that an execution completes before a given timeout duration has expired?", "options": [{"label": "A", "text": "`assertTimeout()`"}, {"label": "B", "text": "`assertTimeLimit()`"}, {"label": "C", "text": "`assertDuration()`"}, {"label": "D", "text": "`assertPreemptively()`"}], "answer": "`assertTimeout()", "answer_label": "A"}, {"id": 16, "question": "Which HTML tag is used to reference and link an external Cascading Style Sheet (CSS) file to an HTML document?", "options": [{"label": "A", "text": "`<style src=\"...\">`"}, {"label": "B", "text": "`<link rel=\"stylesheet\" href=\"...\">`"}, {"label": "C", "text": "`<script type=\"css\" src=\"...\">`"}, {"label": "D", "text": "`<css href=\"...\">`"}], "answer": "`<link rel=\"stylesheet\" href=\"...\">", "answer_label": "B"}, {"id": 17, "question": "Which HTTP method is preferred for submitting form data that contains sensitive user credentials like passwords?", "options": [{"label": "A", "text": "GET"}, {"label": "B", "text": "POST"}, {"label": "C", "text": "OPTIONS"}, {"label": "D", "text": "HEAD"}], "answer": "POST", "answer_label": "B"}, {"id": 18, "question": "Which built-in JavaScript function is used to parse a string representation of an integer and convert it into a numeric data type?", "options": [{"label": "A", "text": "`parseInteger()`"}, {"label": "B", "text": "`parseInt()`"}, {"label": "C", "text": "`Number.toInteger()`"}, {"label": "D", "text": "`convertToMin()`"}], "answer": "`parseInt()", "answer_label": "B"}, {"id": 19, "question": "In JavaScript, how do you dynamically change the background color of an HTML element with an id of `main-box` to light gray?", "options": [{"label": "A", "text": "`document.getElementById(\"main-box\").style.backgroundColor = \"#D3D3D3\";`"}, {"label": "B", "text": "`document.getElementById(\"main-box\").className = \"bg-color\";`"}, {"label": "C", "text": "`document.getElementByName(\"main-box\").background = \"#D3D3D3\";`"}, {"label": "D", "text": "`document.select(\"main-box\").color = \"gray\";`"}], "answer": "`document.getElementById(\"main-box\").style.backgroundColor = \"#D3D3D3\";", "answer_label": "A"}, {"id": 20, "question": "What is the purpose of the `alert()` function in JavaScript?", "options": [{"label": "A", "text": "To print messages directly to the browser console log"}, {"label": "B", "text": "To display a modal dialog box with a specified message and an OK button"}, {"label": "C", "text": "To prompt the user to input data values"}, {"label": "D", "text": "To throw a critical runtime application exception"}], "answer": "To display a modal dialog box with a specified message and an OK button", "answer_label": "B"}, {"id": 21, "question": "Which configuration string represents a valid connection URL format for connecting to a local MySQL database instance using JDBC?", "options": [{"label": "A", "text": "`jdbc:mysql://localhost:3306/emp`"}, {"label": "B", "text": "`jdbc/mysql://localhost:3306/emp`"}, {"label": "C", "text": "`mysql:jdbc://localhost/emp:3306`"}, {"label": "D", "text": "`jdbc:mysql:3306://localhost/emp`"}], "answer": "`jdbc:mysql://localhost:3306/emp", "answer_label": "A"}, {"id": 22, "question": "Which method of the `ResultSetMetaData` interface determines whether a specific column can be used in a SQL `WHERE` clause search?", "options": [{"label": "A", "text": "`isSearchable(int column)`"}, {"label": "B", "text": "`isFilterable(int column)`"}, {"label": "C", "text": "`isSelectable(int column)`"}, {"label": "D", "text": "`isConditionable(int column)`"}], "answer": "`isSearchable(int column)", "answer_label": "A"}, {"id": 23, "question": "Which design pattern is primarily used by the Java Database Connectivity (JDBC) API to locate and load matching database vendor drivers dynamically?", "options": [{"label": "A", "text": "Factory Pattern"}, {"label": "B", "text": "Service Locator / DriverManager Pattern"}, {"label": "C", "text": "Singleton Pattern"}, {"label": "D", "text": "Adapter Pattern"}], "answer": "Service Locator / DriverManager Pattern", "answer_label": "B"}, {"id": 24, "question": "In a JPQL query, what is the correct syntax to sort the records retrieved from an `Employee` entity by their `salary` attribute in descending order?", "options": [{"label": "A", "text": "`SELECT e FROM Employee e ORDER BY e.salary DESC`"}, {"label": "B", "text": "`SELECT e FROM Employee e SORT BY e.salary DOWN`"}, {"label": "C", "text": "`FROM Employee e ORDERING e.salary DESCENDING`"}, {"label": "D", "text": "`SELECT e FROM Employee e ORDER e.salary DESC`"}], "answer": "`SELECT e FROM Employee e ORDER BY e.salary DESC", "answer_label": "A"}, {"id": 25, "question": "When setting an integer value on a `PreparedStatement` placeholder index, which method should be called to avoid type-mismatch compilation errors?", "options": [{"label": "A", "text": "`setInt(int parameterIndex, int x)`"}, {"label": "B", "text": "`setInteger(int parameterIndex, int x)`"}, {"label": "C", "text": "`setNumeric(int parameterIndex, int x)`"}, {"label": "D", "text": "`setVal(int parameterIndex, int x)`"}], "answer": "`setInt(int parameterIndex, int x)", "answer_label": "A"}, {"id": 26, "question": "Which JPA annotation maps a clean, unidirectional association where an entity points to a collection/array of child entity objects?", "options": [{"label": "A", "text": "`@OneToMany`"}, {"label": "B", "text": "`@ManyToOne`"}, {"label": "C", "text": "`@ManyToMany`"}, {"label": "D", "text": "`@OneToOne`"}], "answer": "`@OneToMany", "answer_label": "A"}, {"id": 27, "question": "What fundamental constraint applies to all well-formed XML instance documents?", "options": [{"label": "A", "text": "It must contain exactly one root element enclosing all other elements."}, {"label": "B", "text": "It must contain a reference to a DTD or XML Schema."}, {"label": "C", "text": "All tag names must be written entirely in uppercase."}, {"label": "D", "text": "Attributes must precede element declarations."}], "answer": "It must contain exactly one root element enclosing all other elements.", "answer_label": "A"}, {"id": 28, "question": "Which XSLT directive is explicitly used to iterate over a selected node-set collection and apply transformation rules repeatedly?", "options": [{"label": "A", "text": "`<xsl:for-each>`"}, {"label": "B", "text": "`<xsl:loop>`"}, {"label": "C", "text": "`<xsl:iterate>`"}, {"label": "D", "text": "`<xsl:repeat>`"}], "answer": "`<xsl:for-each>", "answer_label": "A"}, {"id": 29, "question": "In an XSL template matching routine, which character or path token represents the current node context inside an expression?", "options": [{"label": "A", "text": "`.`"}, {"label": "B", "text": "`*`"}, {"label": "C", "text": "`//`"}, {"label": "D", "text": "`@`"}], "answer": "`.", "answer_label": "A"}, {"id": 30, "question": "Which JUnit 5 lifecycle annotation guarantees that the annotated target method runs exactly once before *all* individual test methods execution in the current class file?", "options": [{"label": "A", "text": "`@BeforeAll`"}, {"label": "B", "text": "`@BeforeEach`"}, {"label": "C", "text": "`@BeforeClass`"}, {"label": "D", "text": "`@SetUpAll`"}], "answer": "`@BeforeAll", "answer_label": "A"}, {"id": 31, "question": "Which annotation should be applied to a JUnit 5 test method to temporarily deactivate or ignore it during a continuous integration build runner process?", "options": [{"label": "A", "text": "`@Disabled`"}, {"label": "B", "text": "`@Ignore`"}, {"label": "C", "text": "`@Skip`"}, {"label": "D", "text": "`@TransientTest`"}], "answer": "`@Disabled", "answer_label": "A"}, {"id": 32, "question": "What JUnit 5 standard annotation permits developers to organize and filter tests into distinct execution buckets like \"Production\" or \"Development\"?", "options": [{"label": "A", "text": "`@Tag`"}, {"label": "B", "text": "`@Category`"}, {"label": "C", "text": "`@Group`"}, {"label": "D", "text": "`@Type`"}], "answer": "`@Tag", "answer_label": "A"}, {"id": 33, "question": "What occurs at runtime if a JUnit 5 assertion fails inside a test method context?", "options": [{"label": "A", "text": "An `AssertionError` is thrown, halting execution of that test method, and marking it as \"Failed\"."}, {"label": "B", "text": "The entire JVM terminates unexpectedly."}, {"label": "C", "text": "The test method continues executing remaining assertions normally."}, {"label": "D", "text": "The test is quietly skipped and logged as a success."}], "answer": "An `AssertionError` is thrown, halting execution of that test method, and marking it as \"Failed\".", "answer_label": "A"}, {"id": 34, "question": "Which standard database driver category defines the \"Thin Driver\", which is implemented entirely in Java and communicates directly with the database using network protocols?", "options": [{"label": "A", "text": "Type 4"}, {"label": "B", "text": "Type 3"}, {"label": "C", "text": "Type 2"}, {"label": "D", "text": "Type 1"}], "answer": "Type 4", "answer_label": "A"}, {"id": 35, "question": "Which object manages the tracking and connection lifecycle of registered JDBC database drivers?", "options": [{"label": "A", "text": "`DriverManager`"}, {"label": "B", "text": "`ConnectionRegistry`"}, {"label": "C", "text": "`DriverContext`"}, {"label": "D", "text": "`StatementFactory`"}], "answer": "`DriverManager", "answer_label": "A"}, {"id": 36, "question": "Which Spring Core stereotype annotation marks a class file as an explicitly managed repository component handling database interaction capabilities?", "options": [{"label": "A", "text": "`@Repository`"}, {"label": "B", "text": "`@Component`"}, {"label": "C", "text": "`@Service`"}, {"label": "D", "text": "`@Store`"}], "answer": "`@Repository", "answer_label": "A"}, {"id": 37, "question": "Which Spring Data annotation forces a dynamic JPQL query method to execute as a write/update operation rather than a read-only selection?", "options": [{"label": "A", "text": "`@Modifying`"}, {"label": "B", "text": "`@Update`"}, {"label": "C", "text": "`@Mutate`"}, {"label": "D", "text": "`@Transaction`"}], "answer": "`@Modifying", "answer_label": "A"}, {"id": 38, "question": "What Hibernate property configuration directive controls the automatic creation, updates, or dropping of physical database schemas upon application initialization?", "options": [{"label": "A", "text": "`hibernate.hbm2ddl.auto`"}, {"label": "B", "text": "`hibernate.schema.strategy`"}, {"label": "C", "text": "`hibernate.db.ddl`"}, {"label": "D", "text": "`jpa.generate-ddl`"}], "answer": "`hibernate.hbm2ddl.auto", "answer_label": "A"}, {"id": 39, "question": "Which JPA annotation strategy supports embedding composite primary keys inside a unified class definition file?", "options": [{"label": "A", "text": "`@EmbeddedId`"}, {"label": "B", "text": "`@IdClass`"}, {"label": "C", "text": "`@CompositeKey`"}, {"label": "D", "text": "Both A and B"}], "answer": "Both A and B", "answer_label": "D"}, {"id": 40, "question": "Which Spring annotation resolves conflicts when multiple beans of the exact same data type exist within the IoC context, pointing to the target identity?", "options": [{"label": "A", "text": "`@Qualifier`"}, {"label": "B", "text": "`@Primary`"}, {"label": "C", "text": "`@Resolve`"}, {"label": "D", "text": "`@InjectNamed`"}], "answer": "`@Qualifier", "answer_label": "A"}, {"id": 41, "question": "What default database connection pool does Spring Boot automatically configure out-of-the-box for production-ready applications?", "options": [{"label": "A", "text": "HikariCP"}, {"label": "B", "text": "Tomcat DBCP"}, {"label": "C", "text": "Commons DBCP2"}, {"label": "D", "text": "C3P0"}], "answer": "HikariCP", "answer_label": "A"}, {"id": 42, "question": "Which method should be called on an active transaction instance to commit structural modifications to the database?", "options": [{"label": "A", "text": "`tx.commit()`"}, {"label": "B", "text": "`tx.save()`"}, {"label": "C", "text": "`tx.flush()`"}, {"label": "D", "text": "`tx.close()`"}], "answer": "`tx.commit()", "answer_label": "A"}, {"id": 43, "question": "What type of exception will trigger an automatic database rollback by default when handling a method annotated with Spring's `@Transactional` annotation?", "options": [{"label": "A", "text": "Unchecked Exceptions (`RuntimeException` and its subclasses)"}, {"label": "B", "text": "Checked Exceptions (`IOException`, `Exception`)"}, {"label": "C", "text": "Only explicitly declared custom exceptions"}, {"label": "D", "text": "Errors only"}], "answer": "Unchecked Exceptions (`RuntimeException` and its subclasses)", "answer_label": "A"}, {"id": 44, "question": "Which annotation is used to dynamically inject configurations or execute logical assignments inside Spring utilizing Spring Expression Language (SpEL)?", "options": [{"label": "A", "text": "`@Value`"}, {"label": "B", "text": "`@Property`"}, {"label": "C", "text": "`@Expression`"}, {"label": "D", "text": "`@InjectValue`"}], "answer": "`@Value", "answer_label": "A"}, {"id": 45, "question": "What happens to a JPA entity when you call the `entityManager.clear()` method?", "options": [{"label": "A", "text": "All managed entities inside the persistence context become detached."}, {"label": "B", "text": "All records are permanently erased from the underlying database."}, {"label": "C", "text": "The entities are synchronized and written immediately to the database tables."}, {"label": "D", "text": "The transaction aborts."}], "answer": "All managed entities inside the persistence context become detached.", "answer_label": "A"}, {"id": 46, "question": "Which interface is the primary mechanism for executing stored procedures within a database via JDBC?", "options": [{"label": "A", "text": "`CallableStatement`"}, {"label": "B", "text": "`PreparedStatement`"}, {"label": "C", "text": "`Statement`"}, {"label": "D", "text": "`StoredProcedureStatement`"}], "answer": "`CallableStatement", "answer_label": "A"}, {"id": 47, "question": "What is the default isolation level of a database transaction if it is not explicitly configured in Spring?", "options": [{"label": "A", "text": "`Isolation.DEFAULT` (Uses the underlying database's default isolation level)"}, {"label": "B", "text": "`Isolation.READ_COMMITTED`"}, {"label": "C", "text": "`Isolation.SERIALIZABLE`"}, {"label": "D", "text": "`Isolation.REPEATABLE_READ`"}], "answer": "`Isolation.DEFAULT", "answer_label": "A"}, {"id": 48, "question": "Which JDBC interface provides programmatic metadata details regarding database capabilities, supported features, and product versions?", "options": [{"label": "A", "text": "`DatabaseMetaData`"}, {"label": "B", "text": "`ResultSetMetaData`"}, {"label": "C", "text": "`ConnectionMetaData`"}, {"label": "D", "text": "`DriverMetaData`"}], "answer": "`DatabaseMetaData", "answer_label": "A"}, {"id": 49, "question": "Which annotation is used to mark a persistent field in a JPA entity as non-persistent, indicating that its value should never be stored in the database?", "options": [{"label": "A", "text": "`@Transient`"}, {"label": "B", "text": "`@Ignore`"}, {"label": "C", "text": "`@Temp`"}, {"label": "D", "text": "`@Exclude`"}], "answer": "`@Transient", "answer_label": "A"}, {"id": 50, "question": "Which JUnit 5 assertion evaluates whether two object references point to the exact same object instance in memory?", "options": [{"label": "A", "text": "`assertSame()`"}, {"label": "B", "text": "`assertEquals()`"}, {"label": "C", "text": "`assertInstance()`"}, {"label": "D", "text": "`assertReference()`"}], "answer": "`assertSame()", "answer_label": "A"}, {"id": 51, "question": "What is the purpose of the `@ActiveProfiles` annotation in Spring test classes?", "options": [{"label": "A", "text": "To specify which application profile environments (e.g., \"test\", \"dev\") should be active when loading the ApplicationContext."}, {"label": "B", "text": "To activate specific bean validation rules."}, {"label": "C", "text": "To log testing statistics into user metrics."}, {"label": "D", "text": "To declare database migration profiles."}], "answer": "To specify which application profile environments (e.g., \"test\", \"dev\") should be active when loading the ApplicationContext.", "answer_label": "A"}, {"id": 52, "question": "What does Spring’s Component Scanning mechanism do when an application context initializes?", "options": [{"label": "A", "text": "It dynamically searches pre-defined packages for classes marked with stereotype annotations and registers them as beans."}, {"label": "B", "text": "It compiles Java source files into bytecode on the fly."}, {"label": "C", "text": "It checks external network registries for active database endpoints."}, {"label": "D", "text": "It maps HTML pages directly to database controllers."}], "answer": "It dynamically searches pre-defined packages for classes marked with stereotype annotations and registers them as beans.", "answer_label": "A"}, {"id": 53, "question": "Which annotation is used on a configuration class to explicitly point Spring toward specific packages to inspect for auto-discovered components?", "options": [{"label": "A", "text": "`@ComponentScan`"}, {"label": "B", "text": "`@EnableAutoConfiguration`"}, {"label": "C", "text": "`@FilterPackages`"}, {"label": "D", "text": "`@DiscoverBeans`"}], "answer": "`@ComponentScan", "answer_label": "A"}, {"id": 54, "question": "What is the default naming strategy for a bean registered automatically through `@Component` scanning if no explicit value is provided?", "options": [{"label": "A", "text": "The unqualified class name converted to lower-case camelCase (e.g., `OrderService` becomes `orderService`)."}, {"label": "B", "text": "The fully qualified canonical name of the class file."}, {"label": "C", "text": "A randomly generated UUID string."}, {"label": "D", "text": "The exact name of the class matching its original letter casing."}], "answer": "The unqualified class name converted to lower-case camelCase.", "answer_label": "A"}, {"id": 55, "question": "If a class is annotated with `@Configuration`, what special behavior does Spring apply to its internal factory `@Bean` methods?", "options": [{"label": "A", "text": "Calls are intercepted to ensure the singleton scoping rule is strictly respected."}, {"label": "B", "text": "Methods are stripped of multi-threading properties."}, {"label": "C", "text": "The return types are automatically compiled into native XML mappings."}, {"label": "D", "text": "Methods must be declared static to compile properly."}], "answer": "Calls are intercepted to ensure the singleton scoping rule is strictly respected.", "answer_label": "A"}, {"id": 56, "question": "What is the fundamental functional difference between `@Controller` and `@RestController` in Spring MVC?", "options": [{"label": "A", "text": "`@RestController` combines `@Controller` and `@ResponseBody`, ensuring all method handlers write data directly to the HTTP response body."}, {"label": "B", "text": "`@Controller` can only handle XML payloads, while `@RestController` handles JSON format."}, {"label": "C", "text": "`@RestController` completely bypasses security interceptors."}, {"label": "D", "text": "`@Controller` cannot be used to handle web views or templates."}], "answer": "`@RestController` combines `@Controller` and `@ResponseBody`, ensuring all method handlers write data directly to the HTTP response body.", "answer_label": "A"}, {"id": 57, "question": "Which interface provides generic out-of-the-box CRUD database operations on a repository for a specific managed domain type in Spring Data?", "options": [{"label": "A", "text": "`CrudRepository`"}, {"label": "B", "text": "`JpaSpecificationExecutor`"}, {"label": "C", "text": "`DataConnectionFactory`"}, {"label": "D", "text": "`EntityManagerRepository`"}], "answer": "`CrudRepository", "answer_label": "A"}, {"id": 58, "question": "Which method should be called from Spring Data’s `CrudRepository` interface to insert a new entity or update modifications to an existing entity in the underlying database?", "options": [{"label": "A", "text": "`save(S entity)`"}, {"label": "B", "text": "`persist(S entity)`"}, {"label": "C", "text": "`update(S entity)`"}, {"label": "D", "text": "`insertOrUpdate(S entity)`"}], "answer": "`save(S entity)", "answer_label": "A"}, {"id": 59, "question": "Which scope should be specified to ensure that Spring creates a fresh instance of a bean every time it is requested from the application container?", "options": [{"label": "A", "text": "prototype"}, {"label": "B", "text": "singleton"}, {"label": "C", "text": "request"}, {"label": "D", "text": "session"}], "answer": "prototype", "answer_label": "A"}, {"id": 60, "question": "What is the primary objective of a Java Wrapper Class (e.g., `Integer`, `Double`)?", "options": [{"label": "A", "text": "To wrap or encapsulate a primitive data value into an object form so it can be handled by Java Collections."}, {"label": "B", "text": "To safely map network protocols onto local file paths."}, {"label": "C", "text": "To compress memory layout footprints during calculation execution."}, {"label": "D", "text": "To decrypt secure application strings."}], "answer": "To wrap or encapsulate a primitive data value into an object form so it can be handled by Java Collections.", "answer_label": "A"}, {"id": 61, "question": "In Java Multithreading, what occurs when multiple independent threads concurrently share and execute within a single process framework?", "options": [{"label": "A", "text": "They execute concurrently, independent of each other, while sharing common process resources like heap memory space."}, {"label": "B", "text": "They block each other entirely unless explicitly run across separate CPU socket units."}, {"label": "C", "text": "Each thread automatically instantiates a fully isolated isolated JVM stack environment."}, {"label": "D", "text": "Memory variables are completely duplicated across all working threads."}], "answer": "They execute concurrently, independent of each other, while sharing common process resources like heap memory space.", "answer_label": "A"}, {"id": 62, "question": "Which annotation binds a web request's form data attributes directly onto a complex model command object in Spring MVC handlers?", "options": [{"label": "A", "text": "`@ModelAttribute`"}, {"label": "B", "text": "`@RequestBody`"}, {"label": "C", "text": "`@SessionAttributes`"}, {"label": "D", "text": "`@RequestParam`"}], "answer": "`@ModelAttribute", "answer_label": "A"}, {"id": 63, "question": "Which object scope is shared across an entire web application context and remains active across multiple servlet instances?", "options": [{"label": "A", "text": "`ServletContext`"}, {"label": "B", "text": "`ServletConfig`"}, {"label": "C", "text": "`HttpSession`"}, {"label": "D", "text": "`HttpServletRequest`"}], "answer": "`ServletContext", "answer_label": "A"}, {"id": 64, "question": "What distinguishes `ServletConfig` from `ServletContext` in Java web architecture?", "options": [{"label": "A", "text": "`ServletConfig` holds initialization parameters isolated to one specific servlet instance, whereas `ServletContext` parameters apply globally to the entire web application."}, {"label": "B", "text": "`ServletConfig` deals exclusively with session validation rules."}, {"label": "C", "text": "`ServletContext` cannot handle string key-value configurations."}, {"label": "D", "text": "`ServletConfig` values are modified globally at runtime."}], "answer": "`ServletConfig` holds initialization parameters isolated to one specific servlet instance, whereas `ServletContext` parameters apply globally to the entire web application.", "answer_label": "A"}, {"id": 65, "question": "Which deployment descriptor configuration file is typically utilized to register application filters and URL structural maps in traditional Java EE setups?", "options": [{"label": "A", "text": "`web.xml`"}, {"label": "B", "text": "`persistence.xml`"}, {"label": "C", "text": "`application.properties`"}, {"label": "D", "text": "`context.xml`"}], "answer": "`web.xml", "answer_label": "A"}, {"id": 66, "question": "What is the effect of calling `response.sendRedirect(\"target.jsp\")` inside a servlet's processing pipeline?", "options": [{"label": "A", "text": "The server issues an HTTP status code 302 response to the client browser, forcing it to initiate a brand-new request to the specified URL."}, {"label": "B", "text": "The server internally forwards the request context to the target resource without notifying the client."}, {"label": "C", "text": "The execution thread terminates with a critical exception."}, {"label": "D", "text": "The current session token is immediately invalidated."}], "answer": "The server issues an HTTP status code 302 response to the client browser, forcing it to initiate a brand-new request to the specified URL.", "answer_label": "A"}, {"id": 67, "question": "Which JSP tag block syntax is designated as a Scriptlet, used to embed arbitrary, executable fragments of Java code inside the generated page?", "options": [{"label": "A", "text": "`<%  %>`"}, {"label": "B", "text": "`<%!  %>`"}, {"label": "C", "text": "`<%=  %>`"}, {"label": "D", "text": "`<%@  %>`"}], "answer": "`<%  %>", "answer_label": "A"}, {"id": 68, "question": "Which JSP scripting tag format represents an Expression, which writes out evaluated string values directly into the client response markup without requiring explicit `out.print()` commands?", "options": [{"label": "A", "text": "`<%=  %>`"}, {"label": "B", "text": "`<%!  %>`"}, {"label": "C", "text": "`<%  %>`"}, {"label": "D", "text": "`<%@  %>`"}], "answer": "`<%=  %>", "answer_label": "A"}, {"id": 69, "question": "Which method from the `HttpSession` interface returns the millisecond time value representing the last time a client browser sent an HTTP request associated with this session identifier?", "options": [{"label": "A", "text": "`getLastAccessedTime()`"}, {"label": "B", "text": "`getCreationTime()`"}, {"label": "C", "text": "`getMaxInactiveInterval()`"}, {"label": "D", "text": "`getAccessInterval()`"}], "answer": "`getLastAccessedTime()", "answer_label": "A"}, {"id": 70, "question": "What happens under Spring's transaction manager when a method execution flow encounters a propagation configuration rule defined as `Propagation.REQUIRES_NEW`?", "options": [{"label": "A", "text": "The current active transaction context is suspended, and an entirely new independent transaction boundary is created for this method execution."}, {"label": "B", "text": "The execution fails immediately with a transactional dependency exception."}, {"label": "C", "text": "The execution joins the existing transaction without structural adjustment."}, {"label": "D", "text": "The execution converts the database connectivity pool into a read-only context."}], "answer": "The current active transaction context is suspended, and an entirely new independent transaction boundary is created for this method execution.", "answer_label": "A"}, {"id": 71, "question": "Which component is responsible for mapping logical string view names (e.g., \"dashboard\") returned by controllers onto actual physical presentation file layouts (e.g., \"/WEB-INF/jsp/dashboard.jsp\")?", "options": [{"label": "A", "text": "`ViewResolver`"}, {"label": "B", "text": "`DispatcherServlet`"}, {"label": "C", "text": "`HandlerMapping`"}, {"label": "D", "text": "`ModelAndView`"}], "answer": "`ViewResolver", "answer_label": "A"}];
+
+let currentIdx = 0;
+let score = 0;
+let answered = [];
+let quizDone = false;
+
+const qNum = document.getElementById('qNum');
+const qText = document.getElementById('qText');
+const options = document.getElementById('options');
+const feedback = document.getElementById('feedback');
+const feedbackMsg = document.getElementById('feedbackMsg');
+const feedbackAnswer = document.getElementById('feedbackAnswer');
+const nextBtn = document.getElementById('nextBtn');
+const progressBar = document.getElementById('progressBar');
+const scoreEl = document.getElementById('score');
+const totalEl = document.getElementById('total');
+const quizContent = document.getElementById('quizContent');
+const results = document.getElementById('results');
+const finalScore = document.getElementById('finalScore');
+const finalPct = document.getElementById('finalPct');
+const summary = document.getElementById('summary');
+const restartBtn = document.getElementById('restartBtn');
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function renderQuestion() {
+  if (quizDone) return;
+  const q = QUESTIONS[currentIdx];
+  qNum.textContent = 'Question ' + (currentIdx + 1) + ' of ' + QUESTIONS.length;
+  qText.innerHTML = escapeHtml(q.question).replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  options.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = '<span class="label">' + opt.label + '</span><span>' + escapeHtml(opt.text).replace(/`([^`]+)`/g, '<code>$1</code>') + '</span>';
+    btn.dataset.label = opt.label;
+    btn.addEventListener('click', () => selectOption(i));
+    options.appendChild(btn);
+  });
+
+  feedback.classList.remove('show', 'correct', 'wrong');
+  nextBtn.classList.remove('show');
+  progressBar.style.width = ((currentIdx) / QUESTIONS.length * 100) + '%';
+
+  if (answered[currentIdx] !== undefined) {
+    applyAnswerState();
+  }
+}
+
+function applyAnswerState() {
+  const state = answered[currentIdx];
+  if (state === undefined) return;
+  const q = QUESTIONS[currentIdx];
+  const btns = options.querySelectorAll('.option-btn');
+  btns.forEach((btn, i) => {
+    btn.classList.add('disabled');
+    const label = q.options[i].label;
+    if (label === q.answer_label) {
+      btns[i].classList.add('correct');
+    }
+  });
+  if (state.selectedLabel === q.answer_label) {
+    btns[state.selectedIdx].classList.add('correct');
+  } else {
+    btns[state.selectedIdx].classList.add('wrong');
+  }
+  showFeedback(state.selectedLabel === q.answer_label);
+  nextBtn.classList.add('show');
+  if (currentIdx === QUESTIONS.length - 1) {
+    nextBtn.textContent = 'Show Results';
+  }
+}
+
+function selectOption(idx) {
+  if (answered[currentIdx] !== undefined) return;
+  const q = QUESTIONS[currentIdx];
+  const btns = options.querySelectorAll('.option-btn');
+  const selectedLabel = q.options[idx].label;
+  const isCorrect = selectedLabel === q.answer_label;
+
+  btns.forEach((btn, i) => {
+    btn.classList.add('disabled');
+    if (q.options[i].label === q.answer_label) {
+      btn.classList.add('correct');
+    }
+  });
+  if (isCorrect) {
+    btns[idx].classList.add('correct');
+    score++;
+    scoreEl.textContent = score;
+  } else {
+    btns[idx].classList.add('wrong');
+  }
+
+  answered[currentIdx] = { selectedLabel, selectedIdx: idx, correct: isCorrect };
+  showFeedback(isCorrect);
+  nextBtn.classList.add('show');
+  if (currentIdx === QUESTIONS.length - 1) {
+    nextBtn.textContent = 'Show Results';
+  }
+}
+
+function showFeedback(isCorrect) {
+  const q = QUESTIONS[currentIdx];
+  feedback.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+  feedbackMsg.textContent = isCorrect ? 'Correct!' : 'Wrong!';
+  const answerHtml = escapeHtml(q.answer).replace(/`([^`]+)`/g, '<code>$1</code>');
+  feedbackAnswer.innerHTML = '<strong>Answer: ' + q.answer_label + ') </strong>' + answerHtml;
+}
+
+nextBtn.addEventListener('click', () => {
+  if (currentIdx < QUESTIONS.length - 1) {
+    currentIdx++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function showResults() {
+  quizDone = true;
+  quizContent.classList.add('hidden');
+  results.classList.add('show');
+  progressBar.style.width = '100%';
+  finalScore.textContent = score;
+  const pct = Math.round(score / QUESTIONS.length * 100);
+  finalPct.textContent = pct + '%';
+
+  let html = '<h3 style="margin-bottom:12px">Review Answers</h3>';
+  QUESTIONS.forEach((q, i) => {
+    const a = answered[i];
+    const status = a && a.correct ? '✅' : '❌';
+    const label = a ? a.selectedLabel : '-';
+    html += '<div class="summary-item"><span class="sq-status">' + status + '</span><span class="sq-num">Q' + (i+1) + ':</span> ' + escapeHtml(q.question.slice(0, 80)) + (q.question.length > 80 ? '...' : '') + ' <em>(Your answer: ' + label + ', Correct: ' + q.answer_label + ')</em></div>';
+  });
+  summary.innerHTML = html;
+}
+
+restartBtn.addEventListener('click', () => {
+  currentIdx = 0;
+  score = 0;
+  answered = [];
+  quizDone = false;
+  scoreEl.textContent = '0';
+  results.classList.remove('show');
+  quizContent.classList.remove('hidden');
+  if (nextBtn.textContent === 'Show Results') nextBtn.textContent = 'Next';
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+</body>
+</html>
